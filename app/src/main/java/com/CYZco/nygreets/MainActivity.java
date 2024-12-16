@@ -3,14 +3,20 @@ package com.CYZco.nygreets;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.content.ClipboardManager;
 import android.annotation.SuppressLint;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.content.ClipData;
 import android.util.TypedValue;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.graphics.Color;
@@ -21,6 +27,8 @@ import android.view.Window;
 import java.util.ArrayList;
 import android.os.Bundle;
 import android.view.View;
+
+import java.util.List;
 import java.util.Objects;
 import java.util.Arrays;
 import java.util.Random;
@@ -30,6 +38,7 @@ public class MainActivity extends AppCompatActivity
 {
     private final String[] stages = {"(選階段)","童年","青年","成年","老年"};
     private final String[] festes = {"新年","父親節","母親節","生日"};
+    private RelativeLayout generate_place;
     private ScrollView show_text_scroll;
     private ArrayList<String> record = new ArrayList<>(2);
     private Button generateButton, convertBtn, showGreet, emoji, rank1, rank2, rank3, copy, home, tutorial;
@@ -40,7 +49,7 @@ public class MainActivity extends AppCompatActivity
     private TextView greets;
     private EditText name;
     private int textMode;
-    String show_Greet;
+    private String show_Greet;
 
     String kG = "心想事成\uD83D\uDCAB 大吉大利\uD83C\uDF4A 身體健康\uD83D\uDCAA 學業進步\uD83C\uDF93 步步高升\uD83D\uDCC8 萬事如意\uD83C\uDF40 家庭幸福\uD83C\uDFE0 天天向上\uD83D\uDCC8 夢想成真\uD83C\uDF20 福星高照\uD83C\uDF1F 鵬程萬里\uD83E\uDD85 鶴立雞群\uD83D\uDC51 " +
                 "吉祥安康\uD83C\uDF08 青春常駐\uD83C\uDF1E 笑口常開\uD83D\uDE04 一帆風順\u200b\u26F5 喜氣洋洋\uD83D\uDE01 龍馬精神\uD83D\uDC32 鴻運當頭\uD83C\uDF40 如意吉祥\uD83D\uDCAB 歡樂無邊\uD83D\uDE0A 金榜題名\uD83C\uDFC6 福氣滿滿\uD83D\uDC96 前程似錦\u200b\u2728 " +
@@ -91,6 +100,7 @@ public class MainActivity extends AppCompatActivity
     private String ranIndex(String[] array)
     {return array[new Random().nextInt(array.length)];}
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -120,6 +130,7 @@ public class MainActivity extends AppCompatActivity
 
         show_text_scroll = findViewById(R.id.showGreet_scroll);
         generateButton = findViewById(R.id.generate_button);
+        generate_place = findViewById(R.id.generate_place);
         stageSpinner = findViewById(R.id.stage_spinner);
         convertBtn = findViewById(R.id.convert_btn);
         showGreet = findViewById(R.id.show_button);
@@ -135,6 +146,8 @@ public class MainActivity extends AppCompatActivity
         name = findViewById(R.id.name);
 
         show_text_scroll.setVerticalScrollBarEnabled(false);
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        generate_place.startAnimation(slideUp);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, stages);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -431,7 +444,7 @@ public class MainActivity extends AppCompatActivity
         nullSpin = nullSpin == 0 ? 1 : 0 ;
         greets.setTextSize(30);
         greets.setText(R.string.tutorial);
-        int gray = nullSpin == 0 ? R.drawable.spin_red : R.drawable.spin_green;
+        int gray = nullSpin == 0 ? R.drawable.rect_round10_stroke7_red : R.drawable.rect_round10_stroke7_green;
         int color = nullSpin == 0 ? R.color.red : R.color.green ;
         stageSpinner.setBackground(ContextCompat.getDrawable(MainActivity.this, gray));
         greets.setTextColor(getResources().getColor(color));
@@ -453,7 +466,7 @@ public class MainActivity extends AppCompatActivity
     private void setSpinner(String selected)
     {
         boolean isDefault = selected.equals("(選階段)"); //true when (選階段)
-        int spinnerDrawable = isDefault ? R.drawable.spinner : R.drawable.spinner;
+        int spinnerDrawable = isDefault ? R.drawable.rect_round10_stroke1 : R.drawable.rect_round10_stroke1;
         if (isDefault)
         {
             greets.setTextSize(30);
@@ -478,7 +491,7 @@ public class MainActivity extends AppCompatActivity
             if (i == rlv - 1)
             {
                 ranks[i].setTextColor(ContextCompat.getColor(this, R.color.btnB));
-                ranks[i].setTextSize(22);
+                ranks[i].setTextSize(20);
             }
             else
             {

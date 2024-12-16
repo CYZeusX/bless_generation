@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="18dp"
-    android:backgroundTint="@color/bgc"
-    app:cardCornerRadius="30dp"
+    app:cardCornerRadius="38dp"
     app:cardElevation="3dp"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintTop_toTopOf="parent">
@@ -14,6 +13,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/tutorial_card"
         android:padding="16dp">
 
         <TextView
@@ -27,11 +27,11 @@
             android:layout_marginLeft="20dp"
             android:gravity="center"
             android:textColor="@color/hint"
-            android:textSize="35sp" />
+            android:textSize="35sp"/>
 
         <com.google.android.exoplayer2.ui.PlayerView
             android:id="@+id/generate"
-            android:layout_width="150dp"
+            android:layout_width="80dp"
             android:layout_height="120dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"

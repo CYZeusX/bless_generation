@@ -7,18 +7,25 @@ import androidx.appcompat.app.ActionBar;
 import android.annotation.SuppressLint;
 import android.view.WindowManager;
 import android.content.Intent;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import java.util.ArrayList;
 import android.view.Window;
 import android.view.View;
 import android.os.Bundle;
 import android.os.Build;
+import android.widget.RelativeLayout;
+import android.os.Handler;
+
 import java.util.List;
 
 public class TutorialActivity extends AppCompatActivity
 {
     private Button home, tutorial;
     private RecyclerView tut_SCROLL;
+    private RelativeLayout generate_place;
+    private Animation slideDown, slideGone, slideUpGone;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -49,14 +56,29 @@ public class TutorialActivity extends AppCompatActivity
         tut_SCROLL = findViewById(R.id.tutorial_scroll);
         home = findViewById(R.id.home_button);
         tutorial = findViewById(R.id.tut_button);
+        generate_place = findViewById(R.id.generate_place);
+
+        slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        slideGone = AnimationUtils.loadAnimation(this, R.anim.slide_gone);
+        slideUpGone = AnimationUtils.loadAnimation(this, R.anim.slide_up_gone);
+
+        tut_SCROLL.startAnimation(slideDown);
+        generate_place.startAnimation(slideGone);
 
         home.setOnClickListener(v ->
         {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.zero_ani, R.anim.zero_ani);
+            tut_SCROLL.startAnimation(slideUpGone);
+            int animationDuration = 300;
+            new Handler().postDelayed(() ->
+            {
+                Intent intent = new Intent(home.getContext(), MainActivity.class);
+                home.getContext().startActivity(intent);
+                overridePendingTransition(R.anim.zero_ani, R.anim.zero_ani);
+            }, animationDuration);
         });
+
         tutorial.setOnClickListener(v -> {});
+
 
         tut_SCROLL.setLayoutManager(new LinearLayoutManager(this));
         tut_SCROLL.setVerticalScrollBarEnabled(false);
@@ -85,5 +107,6 @@ public class TutorialActivity extends AppCompatActivity
 
         TutorialAdapter adapter = new TutorialAdapter(videoPaths, which);
         tut_SCROLL.setAdapter(adapter);
+        tut_SCROLL.scrollToPosition(adapter.getItemCount() - 1);
     }
 }

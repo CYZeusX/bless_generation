@@ -2,14 +2,14 @@
     <!-- Base application theme. -->
     <style name="Theme.賀語生成" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="android:windowBackground">@color/bgc</item>
-        <item name="colorPrimary">@color/bgc</item>
+        <item name="android:windowBackground">@color/black</item>
+        <item name="colorPrimary">@color/dark_gray_1E</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/bgc</item>
+        <item name="colorOnPrimary">@color/dark_gray_1E</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/bgc</item>
+        <item name="colorOnSecondary">@color/dark_gray_1E</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->

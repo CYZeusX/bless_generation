@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <color name="bgc">#131313</color>
-    <color name="bgcl">#1E1E1E</color>
+    <color name="dark_gray_13">#131313</color>
+    <color name="dark_gray_1E">#090909</color>
+    <color name="dark_blue_app">#192846</color>
     <color name="set3">#1E1E1E</color>
     <color name="pop_spin">#1E1E1E</color>
     <color name="bar">#1E1E1E</color>
-    <color name="barTop">#282828</color>
+    <color name="gray_28">#282828</color>
+    <color name="gray_50">#505050</color>
     <color name="greets">#F0F0F0</color>
     <color name="green">#00FF00</color>
     <color name="greetBtn">#C2E4BE</color>
