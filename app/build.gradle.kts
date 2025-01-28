@@ -33,11 +33,11 @@ android {
 }
 
 dependencies {
-    implementation ("androidx.multidex:multidex:2.0.1")
+    implementation (libs.multidex)
     implementation(libs.appcompat)
     implementation(libs.material)
-    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
-    implementation("com.github.bosphere.android-fadingedgelayout:fadingedgelayout:1.0.0")
+    implementation(libs.exoplayer)
+    implementation(libs.fadingedgelayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

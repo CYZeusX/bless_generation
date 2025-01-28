@@ -1,0 +1,84 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settings_dialog"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ranks"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/rank1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/set3"
+            android:gravity="center_horizontal"
+            android:text="@string/junior"
+            android:textAlignment="center"
+            android:textColor="@color/btnBg"
+            android:textSize="20sp"
+            app:shapeAppearanceOverlay="@style/copy" />
+
+        <Button
+            android:id="@+id/rank2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/set3"
+            android:gravity="center_horizontal"
+            android:text="@string/medior"
+            android:textAlignment="center"
+            android:textColor="@color/btnBg"
+            android:textSize="20sp"
+            app:cornerRadius="0dp" />
+
+        <Button
+            android:id="@+id/rank3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:backgroundTint="@color/set3"
+            android:gravity="center_horizontal"
+            android:text="@string/senior"
+            android:textAlignment="center"
+            android:textColor="@color/btnBg"
+            android:textSize="20sp"
+            app:shapeAppearanceOverlay="@style/convert" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/festival_stage_place"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:layout_below="@+id/ranks"
+        android:layout_marginTop="5dp"
+        android:elevation="20dp">
+
+        <Spinner
+            android:id="@+id/festival"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/rect_round10_stroke1"
+            android:popupBackground="@drawable/rect_round10_stroke1"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/stage_spinner"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/rect_round10_stroke1"
+            android:popupBackground="@drawable/rect_round10_stroke1"
+            android:spinnerMode="dropdown" />
+    </LinearLayout>
+
+</RelativeLayout>
