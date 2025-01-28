@@ -130,11 +130,8 @@ public class MainActivity extends AppCompatActivity
 
         showTextScroller.setVerticalScrollBarEnabled(false);
 
-        new Thread(() ->
-        {
-            Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
-            generatePlace.startAnimation(slideUp);
-        });
+        Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        generatePlace.startAnimation(slideUp);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, STAGES);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
