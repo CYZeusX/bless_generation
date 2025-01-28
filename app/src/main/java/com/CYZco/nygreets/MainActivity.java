@@ -33,21 +33,21 @@ public class MainActivity extends AppCompatActivity
 {
     private final String[] STAGES = {"(選階段)","童年","青年","成年","老年"};
     private final String[] FESTIVALS = {"新年","父親節","母親節","生日"};
-    private Button emojiButton;
-    private Button copyButton;
-    private Button convertButton;
-    private Button showBlessing;
-    private Button juniorRankButton;
-    private Button peerRankButton;
-    private Button seniorRankButton;
-    private Spinner stageSpinner;
-    private int rankDefault = 2;
+    public Button emojiButton;
+    public Button copyButton;
+    public Button convertButton;
+    public Button showBlessing;
+    public Button juniorRankButton;
+    public Button peerRankButton;
+    public Button seniorRankButton;
+    public Spinner stageSpinner;
+    public String rankDefault = "peer"; //2
     private boolean emojiMode = false; //false = emoji disabled
     private int nullSpin = 0;
     private String textMode = "mail";
-    private TextView textField;
+    public TextView textField;
     private EditText targetName;
-    private String show_Greet;
+    public String show_Greet;
     private final CustomSetting CUSTOM_SETTING = new CustomSetting();
     private final ArrayList<String> RECORDS = new ArrayList<>(2);
     private final Bless BLESS = new Bless();
@@ -173,15 +173,17 @@ public class MainActivity extends AppCompatActivity
                 {
                     String replace = "\u3297\uFE0F";
                     String blessWithEmoji = saveBlesses.get(0);
-                    String blessNoEmoji = cutEmoji(blessWithEmoji);
+                    String blessWithoutEmoji = cutEmoji(blessWithEmoji);
                     String noEmojiMessage = getMes.substring(0, getMes.lastIndexOf(" ")).replace(replace,"祝");
                     String emojiReplacedMessage = noEmojiMessage.replace("祝", replace);
 
-                    String text = !emojiMode ? blessWithEmoji : blessNoEmoji;
+                    String text = !emojiMode ? blessWithEmoji : blessWithoutEmoji;
                     String message = !emojiMode ? emojiReplacedMessage : noEmojiMessage;
-
                     int shadowColor = emojiMode ? getResources().getColor(R.color.green) : getResources().getColor(R.color.red);
-                    emojiButton.setShadowLayer(29f, 0f , 0f, shadowColor);
+                    String differentEmojiEffect = emojiMode ? "\uD83D\uDE04" : "\uD83D\uDE36"; // ^v^ & :
+
+                    emojiButton.setText(differentEmojiEffect);
+                    emojiButton.setShadowLayer(40f, 0f , 0f, shadowColor);
 
                     emojiMode = !emojiMode;
                     String textE = message + " " + text;
@@ -261,20 +263,20 @@ public class MainActivity extends AppCompatActivity
         });
 
         juniorRankButton.setOnClickListener(e ->
-        {//晚輩
-            rankDefault = 1;
+        {//晚輩  junior
+            rankDefault = "junior";
             rankBTN();
         });
 
         peerRankButton.setOnClickListener(e ->
-        {//平輩
-            rankDefault = 2;
+        {//平輩  peer
+            rankDefault = "peer";
             rankBTN();
         });
 
         seniorRankButton.setOnClickListener(e ->
-        {//長輩
-            rankDefault = 3;
+        {//長輩  senior
+            rankDefault = "senior";
             rankBTN();
         });
 
@@ -295,7 +297,7 @@ public class MainActivity extends AppCompatActivity
 
     private void rankBTN()
     {
-        checkRLV(rankDefault);
+        checkRankLevel(rankDefault);
 
         if (!saveBlesses.get(0).isEmpty())
         {
@@ -312,30 +314,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void checkRLV(int rlv)
+    private void checkRankLevel(String rankLevel)
     {
-        Button[] ranks = new Button[]{juniorRankButton, peerRankButton, seniorRankButton};
+        Button[] rankButtons = new Button[]{juniorRankButton, peerRankButton, seniorRankButton};
         emojiButton.setVisibility(View.VISIBLE);
 
-        for (int i = 0; i < ranks.length; i++)
+        // Map rankLevel to index
+        int selectedIndex = 1; // Default to "peer" (index 1)
+        if (rankLevel.equals("junior")) selectedIndex = 0;
+        else if (rankLevel.equals("senior")) selectedIndex = 2;
+
+        // Update button styles
+        for (int i = 0; i < rankButtons.length; i++)
         {
-            if (i == rlv - 1)
-            {
-                ranks[i].setTextColor(ContextCompat.getColor(this, R.color.btnB));
-                ranks[i].setTextSize(20);
-            }
-            else
-            {
-                ranks[i].setTextColor(ContextCompat.getColor(this, R.color.btnBg));
-                ranks[i].setTextSize(20);
-            }
+            rankButtons[i].setTextSize(i == selectedIndex ? 20 : 18);
+            rankButtons[i].setTextColor(ContextCompat.getColor(this,
+                    i == selectedIndex ? R.color.btnB : R.color.btnBg));
         }
     }
 
-    private void setBlessingMail(int rlv, String emoji, String greet)
+    private void setBlessingMail(String rankLevel, String emoji, String greet)
     {
         textMode = "mail";
-        checkRLV(rlv);
+        checkRankLevel(rankLevel);
         String dear = "\n\n親愛的 ";
         String names = targetName.getText().toString();
         String space1 = " "; // for align
@@ -345,19 +346,19 @@ public class MainActivity extends AppCompatActivity
 
         if (!names.isEmpty())
         {
-            if (rankDefault != 3)
+            if (!rankDefault.equals("senior"))
             {names += ":\n";}
             else {names += "";}
         }
 
-        if (rlv == 1)
+        if (rankLevel.equals("junior"))
         {names = surname(names);}
 
         String dearY = dear + names + ":\n" + space1 + zhu + "您" + ny + space2 + greet;
         String dearN = "\n\n" + names + space1 + zhu + "你" + ny + space2 + greet;
 
         String sentence;
-        if (rlv == 3) {sentence = dearY;}
+        if (rankLevel.equals("senior")) {sentence = dearY;}
         else {sentence = dearN;}
 
         addRecord(sentence);
@@ -365,15 +366,15 @@ public class MainActivity extends AppCompatActivity
         textField.setText(sentence);
     }
 
-    private void setBlessingLineText(int rlv, String emoji, String greet)
+    private void setBlessingLineText(String rankLevel, String emoji, String greet)
     {
         textMode = "line";
-        checkRLV(rlv);
+        checkRankLevel(rankLevel);
 
         String zhu = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
         String names = targetName.getText().toString();
 
-        if (rlv == 1)
+        if (rankLevel.equals("junior"))
         {names = surname(names);}
 
         String sentence = "\n\n" + zhu + names + "新年快樂!  " + greet;
@@ -440,7 +441,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @SuppressLint("ResourceAsColor")
-    private void byDefault(boolean bool)
+    public void byDefault(boolean bool)
     {
         int visa = bool ? View.VISIBLE : View.INVISIBLE;
         copyButton.setEnabled(bool);
