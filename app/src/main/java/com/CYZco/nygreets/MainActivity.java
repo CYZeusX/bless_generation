@@ -8,16 +8,13 @@ import android.content.ClipboardManager;
 import android.view.animation.Animation;
 import android.annotation.SuppressLint;
 import android.widget.RelativeLayout;
-import android.widget.ArrayAdapter;
 import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ScrollView;
 import android.content.ClipData;
 import android.util.TypedValue;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.graphics.Color;
-import android.widget.Spinner;
 import android.content.Intent;
 import android.widget.Button;
 import android.view.Window;
@@ -31,22 +28,17 @@ import android.os.Build;
 
 public class MainActivity extends AppCompatActivity
 {
-    private final String[] STAGES = {"(選階段)","童年","青年","成年","老年"};
-    private final String[] FESTIVALS = {"新年","父親節","母親節","生日"};
     public Button showBlessing;
     public Button emojiButton;
     public Button copyButton;
     public Button convertButton;
-    public Button juniorRankButton;
-    public Button peerRankButton;
-    public Button seniorRankButton;
-    public Spinner stageSpinner;
-    private boolean emojiMode = false; //false = emoji disabled
+    public Button settingButton;
+    public boolean emojiMode = false; //false = emoji disabled
     private int nullSpin = 0;
     public TextView textField;
     private EditText targetName;
     public String rankDefault = "peer"; //2
-    private String textMode = "mail";
+    public String textMode = "mail";
     public String show_Greet;
     private final CustomSetting CUSTOM_SETTING = new CustomSetting();
     private final ArrayList<String> RECORDS = new ArrayList<>(2);
@@ -59,11 +51,10 @@ public class MainActivity extends AppCompatActivity
     String[] blessArrays;
     ArrayList<String> saveBlesses = new ArrayList<>();
 
-    private void addRecord(String s)
+    public void addRecord(String s)
     {
         if(RECORDS.size() == 2)
-        {
-            RECORDS.remove(0);}
+            RECORDS.remove(0);
         RECORDS.add(s);
     }
     private String newGreet(String[] array)
@@ -115,16 +106,11 @@ public class MainActivity extends AppCompatActivity
         RelativeLayout generatePlace = findViewById(R.id.generate_place);
         Button tutorialButton = findViewById(R.id.tut_button);
         Button homeButton = findViewById(R.id.home_button);
-        Button settingButton = findViewById(R.id.setting);
-        Spinner festivalSelector = findViewById(R.id.festival);
-        stageSpinner = findViewById(R.id.stage_spinner);
+        settingButton = findViewById(R.id.setting);
         convertButton = findViewById(R.id.convert_btn);
         showBlessing = findViewById(R.id.show_button);
         emojiButton = findViewById(R.id.emojiAdd);
         textField = findViewById(R.id.greets);
-        juniorRankButton = findViewById(R.id.rank1);
-        peerRankButton = findViewById(R.id.rank2);
-        seniorRankButton = findViewById(R.id.rank3);
         copyButton = findViewById(R.id.copy);
         targetName = findViewById(R.id.name);
 
@@ -133,41 +119,19 @@ public class MainActivity extends AppCompatActivity
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         generatePlace.startAnimation(slideUp);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, STAGES);
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        stageSpinner.setAdapter(adapter);
-        stageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                setSpinner(selectedItem);
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
-        ArrayAdapter<String> festAdapter = new ArrayAdapter<>(this, R.layout.spinner_item, FESTIVALS);
-        festAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        festivalSelector.setAdapter(festAdapter);
-        festivalSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                setSpinner(selectedItem);
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
         generateButton.setOnClickListener
-        (v -> setGreet( stageSpinner.getSelectedItem().toString() ) );
+        (v ->
+            {
+                if ( CUSTOM_SETTING.stageSpinner.getSelectedItem() != null)
+                    setGreet(CUSTOM_SETTING.stageSpinner.getSelectedItem().toString());
+                setText3();
+            }
+        );
 
         emojiButton.setOnClickListener(e->
         {
             String getMes = textField.getText().toString();
-            if (!stageSpinner.getSelectedItem().toString().equals("(選階段)") && !saveBlesses.get(0).isEmpty())
+            if (!CUSTOM_SETTING.stageSpinner.getSelectedItem().toString().equals("(選階段)") && !saveBlesses.get(0).isEmpty())
             {
                 if (getMes.contains(" "))
                 {
@@ -196,7 +160,7 @@ public class MainActivity extends AppCompatActivity
 
         showBlessing.setOnClickListener(v ->
         {
-            String stage = stageSpinner.getSelectedItem().toString();
+            String stage = CUSTOM_SETTING.stageSpinner.getSelectedItem().toString();
             if (stage.equals("(選階段)"))
                 setText3();
 
@@ -262,24 +226,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        juniorRankButton.setOnClickListener(e ->
-        {//晚輩  junior
-            rankDefault = "junior";
-            rankBTN();
-        });
-
-        peerRankButton.setOnClickListener(e ->
-        {//平輩  peer
-            rankDefault = "peer";
-            rankBTN();
-        });
-
-        seniorRankButton.setOnClickListener(e ->
-        {//長輩  senior
-            rankDefault = "senior";
-            rankBTN();
-        });
-
         homeButton.setOnClickListener(v -> {});
 
         settingButton.setOnClickListener(v ->
@@ -295,48 +241,10 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void rankBTN()
-    {
-        checkRankLevel(rankDefault);
-
-        if (!saveBlesses.get(0).isEmpty())
-        {
-            String greet = emojiMode ? saveBlesses.get(0) : cutEmoji(saveBlesses.get(0));
-            String yn = emojiMode ? "y" : "n";
-
-            if (textMode.equals("mail"))
-            {
-                setBlessingMail(rankDefault, yn, greet);}
-            if (textMode.equals("line"))
-            {
-                setBlessingLineText(rankDefault, yn, greet);}
-            addRecord(textField.getText().toString());
-        }
-    }
-
-    private void checkRankLevel(String rankLevel)
-    {
-        Button[] rankButtons = new Button[]{juniorRankButton, peerRankButton, seniorRankButton};
-        emojiButton.setVisibility(View.VISIBLE);
-
-        // Map rankLevel to index
-        int selectedIndex = 1; // Default to "peer" (index 1)
-        if (rankLevel.equals("junior")) selectedIndex = 0;
-        else if (rankLevel.equals("senior")) selectedIndex = 2;
-
-        // Update button styles
-        for (int i = 0; i < rankButtons.length; i++)
-        {
-            rankButtons[i].setTextSize(i == selectedIndex ? 20 : 18);
-            rankButtons[i].setTextColor(ContextCompat.getColor(this,
-                    i == selectedIndex ? R.color.gray_200 : R.color.gray_64));
-        }
-    }
-
-    private void setBlessingMail(String rankLevel, String emoji, String greet)
+    public void setBlessingMail(String rankLevel, String emoji, String greet)
     {
         textMode = "mail";
-        checkRankLevel(rankLevel);
+        CUSTOM_SETTING.checkRankLevel(rankLevel);
         String dear = "\n\n親愛的 ";
         String names = targetName.getText().toString();
         String space1 = " "; // for align
@@ -366,10 +274,10 @@ public class MainActivity extends AppCompatActivity
         textField.setText(sentence);
     }
 
-    private void setBlessingLineText(String rankLevel, String emoji, String greet)
+    public void setBlessingLineText(String rankLevel, String emoji, String greet)
     {
         textMode = "line";
-        checkRankLevel(rankLevel);
+        CUSTOM_SETTING.checkRankLevel(rankLevel);
 
         String zhu = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
         String names = targetName.getText().toString();
@@ -391,7 +299,7 @@ public class MainActivity extends AppCompatActivity
         textField.setText(R.string.tutorial);
         int gray = nullSpin == 0 ? R.drawable.rect_round10_stroke7_red : R.drawable.rect_round10_stroke7_green;
         int color = nullSpin == 0 ? R.color.red : R.color.green ;
-        stageSpinner.setBackground(ContextCompat.getDrawable(MainActivity.this, gray));
+        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, gray));
         textField.setTextColor(getResources().getColor(color));
     }
 
@@ -432,7 +340,7 @@ public class MainActivity extends AppCompatActivity
         {setBlessingLineText(rankDefault, yn, mesDecide);}
     }
 
-    private String cutEmoji(String text)
+    public String cutEmoji(String text)
     {
         String[] s0 = text.split("、");
         String s1 = s0[0].substring(0,s0[0].length()-2);
@@ -446,29 +354,11 @@ public class MainActivity extends AppCompatActivity
         int visa = bool ? View.VISIBLE : View.INVISIBLE;
         copyButton.setEnabled(bool);
         convertButton.setEnabled(bool);
-        juniorRankButton.setEnabled(bool);
-        peerRankButton.setEnabled(bool);
-        seniorRankButton.setEnabled(bool);
+        CUSTOM_SETTING.juniorRankButton.setEnabled(bool);
+        CUSTOM_SETTING.peerRankButton.setEnabled(bool);
+        CUSTOM_SETTING.seniorRankButton.setEnabled(bool);
         showBlessing.setVisibility(visa);
         emojiButton.setVisibility(visa);
-    }
-
-    private void setSpinner(String selected)
-    {
-        boolean isDefault = selected.equals("(選階段)"); //true when (選階段)
-        int spinnerDrawable = R.drawable.rect_round10_stroke1;
-        if (isDefault)
-        {
-            textField.setTextSize(30);
-            textField.setTextColor(Color.GRAY);
-            textField.setText(R.string.tutorial);
-        }
-
-        stageSpinner.setBackground(ContextCompat.getDrawable(MainActivity.this, spinnerDrawable));
-        byDefault(!isDefault);
-
-        if (textField.getText().toString().equals(show_Greet))
-        {emojiButton.setVisibility(View.INVISIBLE);}
     }
 
     private Boolean checkEnglish(String name)
