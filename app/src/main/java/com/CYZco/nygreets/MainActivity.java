@@ -1,7 +1,6 @@
 package com.CYZco.nygreets;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.animation.AnimationUtils;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
@@ -36,10 +35,10 @@ public class MainActivity extends AppCompatActivity
     public Button convertButton;
     public Button settingButton;
     public boolean emojiMode = false; //false = emoji disabled
-    private int nullSpin = 0;
+    private boolean nullSpin = false;
     public TextView textField;
     private EditText targetName;
-    public String rankDefault = "peer"; //2
+    public String rankDefault = "peer";
     public String textMode = "mail";
     public String show_Greet;
     private final CustomSetting CUSTOM_SETTING = new CustomSetting();
@@ -133,8 +132,11 @@ public class MainActivity extends AppCompatActivity
 
         emojiButton.setOnClickListener(e->
         {
-            String getMes = textField.getText().toString();
+            Spinner stageSpinner = CUSTOM_SETTING.stageSpinner;
+            if (stageSpinner == null || stageSpinner.getSelectedItem() == null)
+                return;
 
+            String getMes = textField.getText().toString();
             if (!CUSTOM_SETTING.stageSpinner.getSelectedItem().toString().equals("(選階段)") && !saveBlesses.get(0).isEmpty())
             {
                 if (getMes.contains(" "))
@@ -154,10 +156,10 @@ public class MainActivity extends AppCompatActivity
                     emojiButton.setShadowLayer(40f, 0f , 0f, shadowColor);
 
                     emojiMode = !emojiMode;
-                    String textE = message + " " + text;
+                    String textWithEmoji = message + " " + text;
 
-                    addRecord(textE);
-                    textField.setText(textE);
+                    addRecord(textWithEmoji);
+                    textField.setText(textWithEmoji);
                 }
             }
         });
@@ -300,11 +302,11 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("SetTextI18n")
     private void setRemindText()
     {
-        nullSpin = nullSpin == 0 ? 1 : 0 ;
-        textField.setTextSize(30);
+        nullSpin = !nullSpin;
+        textField.setTextSize(33);
         textField.setText(R.string.tutorial);
-        int gray = nullSpin == 0 ? R.drawable.rect_round10_stroke7_red : R.drawable.rect_round10_stroke7_green;
-        int color = nullSpin == 0 ? R.color.red : R.color.green ;
+        int gray = !nullSpin ? R.drawable.rect_round10_stroke7_red : R.drawable.rect_round10_stroke7_green;
+        int color = !nullSpin ? R.color.red : R.color.green ;
         settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, gray));
         textField.setTextColor(getResources().getColor(color));
     }
