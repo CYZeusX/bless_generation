@@ -1,6 +1,7 @@
 package com.CYZco.nygreets;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.view.animation.AnimationUtils;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
@@ -12,6 +13,7 @@ import android.view.WindowManager;
 import android.widget.ScrollView;
 import android.content.ClipData;
 import android.util.TypedValue;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.EditText;
 import android.graphics.Color;
@@ -119,18 +121,20 @@ public class MainActivity extends AppCompatActivity
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         generatePlace.startAnimation(slideUp);
 
-        generateButton.setOnClickListener
-        (v ->
+        generateButton.setOnClickListener(v ->
+        {
+            if (CUSTOM_SETTING.stageSpinner == null || CUSTOM_SETTING.stageSpinner.getSelectedItem() == null)
             {
-                if ( CUSTOM_SETTING.stageSpinner.getSelectedItem() != null)
-                    setGreet(CUSTOM_SETTING.stageSpinner.getSelectedItem().toString());
-                setText3();
+                setRemindText();
+                return;
             }
-        );
+            setGreet(CUSTOM_SETTING.stageSpinner.getSelectedItem().toString());
+        });
 
         emojiButton.setOnClickListener(e->
         {
             String getMes = textField.getText().toString();
+
             if (!CUSTOM_SETTING.stageSpinner.getSelectedItem().toString().equals("(選階段)") && !saveBlesses.get(0).isEmpty())
             {
                 if (getMes.contains(" "))
@@ -160,9 +164,13 @@ public class MainActivity extends AppCompatActivity
 
         showBlessing.setOnClickListener(v ->
         {
-            String stage = CUSTOM_SETTING.stageSpinner.getSelectedItem().toString();
+            Spinner stageSpinner = CUSTOM_SETTING.stageSpinner;
+            if (stageSpinner == null || stageSpinner.getSelectedItem() == null)
+                return;
+
+            String stage = stageSpinner.getSelectedItem().toString();
             if (stage.equals("(選階段)"))
-                setText3();
+                setRemindText();
 
             String[] blessArrays = BLESS.getGreetingsByStage(stage);
 
@@ -229,9 +237,7 @@ public class MainActivity extends AppCompatActivity
         homeButton.setOnClickListener(v -> {});
 
         settingButton.setOnClickListener(v ->
-        {
-            CUSTOM_SETTING.show(getSupportFragmentManager(), "settingButton");
-        });
+                CUSTOM_SETTING.show(getSupportFragmentManager(), "settingButton"));
 
         tutorialButton.setOnClickListener(v ->
         {
@@ -292,7 +298,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @SuppressLint("SetTextI18n")
-    private void setText3()
+    private void setRemindText()
     {
         nullSpin = nullSpin == 0 ? 1 : 0 ;
         textField.setTextSize(30);
@@ -308,7 +314,7 @@ public class MainActivity extends AppCompatActivity
         switch (selected)
         {
             case "(選階段)":
-                setText3();
+                setRemindText();
                 return;
             case "童年":
                 blessArrays = kidBlesses;
@@ -369,9 +375,7 @@ public class MainActivity extends AppCompatActivity
             for (char charABC : abc.toCharArray())
             {
                 if (c == charABC)
-                {
                     return true;
-                }
             }
         }
         return false;

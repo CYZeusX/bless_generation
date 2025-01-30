@@ -59,6 +59,8 @@ public class CustomSetting extends DialogFragment
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
+                if (!isAdded()) return;
+
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 setSpinner(selectedItem);
             }
@@ -84,64 +86,85 @@ public class CustomSetting extends DialogFragment
 
     private void rankButtonSetting(Button button, String rank)
     {
-        mainActivity = (MainActivity) requireActivity();
-        button.setOnClickListener(e ->
+        if (isAdded() && getActivity() != null)
         {
-            mainActivity.rankDefault = rank;
-            rankButton();
-        });
+            mainActivity = (MainActivity) requireActivity();
+            button.setOnClickListener(e ->
+            {
+                if (isAdded() && getActivity() != null)
+                {
+                    mainActivity.rankDefault = rank;
+                    rankButton();
+                }
+            });
+        }
     }
 
     private void setSpinner(String selected)
     {
+        if (isAdded() || getActivity() != null) return;
+
         boolean isDefault = selected.equals("(選階段)");
+        MainActivity mainActivity = (MainActivity) getActivity();
 
-        // Access the main activity safely
-        MainActivity mainActivity = (MainActivity) requireActivity();
-
-        Button emojiButton = mainActivity.emojiButton;
-        TextView textField = mainActivity.textField;
-
-        int spinnerDrawable = R.drawable.rect_round10_stroke1;
-
-        if (isDefault)
+        if (mainActivity != null)
         {
-            textField.setTextSize(30);
-            textField.setTextColor(Color.GRAY);
-            textField.setText(R.string.tutorial);
+            Button emojiButton = mainActivity.emojiButton;
+            TextView textField = mainActivity.textField;
+            int spinnerDrawable = R.drawable.rect_round10_stroke1;
+
+            if (isDefault)
+            {
+                textField.setTextSize(30);
+                textField.setTextColor(Color.GRAY);
+                textField.setText(R.string.tutorial);
+            }
+
+            if (stageSpinner != null)
+            {
+                stageSpinner.setBackground(ContextCompat.getDrawable(mainActivity, spinnerDrawable));
+            }
+
+            mainActivity.byDefault(!isDefault);
+
+            if (textField.getText().toString().equals(mainActivity.show_Greet))
+                emojiButton.setVisibility(View.INVISIBLE);
         }
-
-        stageSpinner.setBackground(ContextCompat.getDrawable(mainActivity, spinnerDrawable));
-        mainActivity.byDefault(!isDefault);
-
-        if (textField.getText().toString().equals(mainActivity.show_Greet))
-        {emojiButton.setVisibility(View.INVISIBLE);}
     }
 
     public void rankButton()
     {
-        mainActivity = (MainActivity) requireActivity();
-        checkRankLevel(mainActivity.rankDefault);
-        MainActivity mainActivity = (MainActivity) requireActivity();
+        if (isAdded() || getActivity() != null) return;
 
-        if (!mainActivity.saveBlesses.get(0).isEmpty())
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null)
         {
-            String greet = mainActivity.emojiMode ? mainActivity.saveBlesses.get(0) : mainActivity.cutEmoji(mainActivity.saveBlesses.get(0));
-            String yn = mainActivity.emojiMode ? "y" : "n";
+            checkRankLevel(mainActivity.rankDefault);
 
-            if (mainActivity.textMode.equals("mail"))
+            if (!mainActivity.saveBlesses.get(0).isEmpty())
             {
-                mainActivity.setBlessingMail(mainActivity.rankDefault, yn, greet);}
-            if (mainActivity.textMode.equals("line"))
-            {
-                mainActivity.setBlessingLineText(mainActivity.rankDefault, yn, greet);}
-            mainActivity.addRecord(mainActivity.textField.getText().toString());
+                String greet = mainActivity.emojiMode ? mainActivity.saveBlesses.get(0) : mainActivity.cutEmoji(mainActivity.saveBlesses.get(0));
+                String yn = mainActivity.emojiMode ? "y" : "n";
+
+                if (mainActivity.textMode.equals("mail"))
+                {
+                    mainActivity.setBlessingMail(mainActivity.rankDefault, yn, greet);}
+                if (mainActivity.textMode.equals("line"))
+                {
+                    mainActivity.setBlessingLineText(mainActivity.rankDefault, yn, greet);}
+                mainActivity.addRecord(mainActivity.textField.getText().toString());
+            }
         }
+
     }
 
     public void checkRankLevel(String rankLevel)
     {
-        MainActivity mainActivity = (MainActivity) requireActivity();
+        if (isAdded()|| getActivity() == null) return;
+
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity == null) return;
+
         Button[] rankButtons = new Button[]{juniorRankButton, peerRankButton, seniorRankButton};
         mainActivity.emojiButton.setVisibility(View.VISIBLE);
 
@@ -171,11 +194,15 @@ public class CustomSetting extends DialogFragment
             getDialog().getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
             // Blur the activity's root view
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+            if(isAdded())
             {
                 rootView = requireActivity().getWindow().getDecorView().getRootView();
-                rootView.setRenderEffect(RenderEffect.createBlurEffect(10, 10, Shader.TileMode.MIRROR));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
+                {
+                    rootView.setRenderEffect(RenderEffect.createBlurEffect(10, 10, Shader.TileMode.MIRROR));
+                }
             }
+
         }
     }
 
