@@ -6,5 +6,5 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:textSize="20sp"
-    android:textColor="@color/btnB"
+    android:textColor="@color/gray_200"
     tools:ignore="RtlSymmetry" />

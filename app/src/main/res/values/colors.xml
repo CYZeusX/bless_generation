@@ -1,35 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
-    <color name="dark_gray_13">#131313</color>
-    <color name="dark_gray_1E">#090909</color>
-    <color name="dark_blue_app">#192846</color>
-    <color name="set3">#1E1E1E</color>
-    <color name="pop_spin">#1E1E1E</color>
-    <color name="bar">#1E1E1E</color>
-    <color name="gray_28">#282828</color>
-    <color name="gray_50">#505050</color>
-    <color name="greets">#F0F0F0</color>
-    <color name="green">#00FF00</color>
-    <color name="greetBtn">#C2E4BE</color>
-    <color name="tick">#14141E</color>
-    <color name="btnB">#C8C8C8</color>
-    <color name="btnBg">#404040</color>
-    <color name="purple_700">#00FFFFFF</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
-    <color name="gray">#969696</color>
-    <color name="hint">#D0D0D0</color>
+    <color name="gray_09">#090909</color>
+    <color name="gray_19">#131313</color>
+    <color name="gray_30">#1E1E1E</color>
+    <color name="gray_40">#282828</color>
+    <color name="gray_64">#404040</color>
+    <color name="gray_80">#505050</color>
+    <color name="gray_150">#969696</color>
+    <color name="gray_200">#C8C8C8</color>
+    <color name="gray_208">#D0D0D0</color>
+    <color name="gray_240">#F0F0F0</color>
     <color name="white">#FFFFFFFF</color>
+
     <color name="redB">#E35555</color>
     <color name="red">#ff0000</color>
-    <color name="btn">#F0F6F8</color>
-    <color name="btnD">#6F95B0</color>
     <color name="app">#FFD278</color>
     <color name="yellow">#FFFF00</color>
+    <color name="green">#00FF00</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="btnD">#6F95B0</color>
     <color name="btick">#4FB6EC</color>
     <color name="blue">#0A41FF</color>
-    <color name="nul">#00FFFFFF</color>
+    <color name="dark_blue_app">#192846</color>
+    <color name="tick">#14141E</color>
+    <color name="purple_700">#00FFFFFF</color>
+
+    <color name="nul">#00000000</color>
     <color name="nulB">#99000000</color>
 </resources>

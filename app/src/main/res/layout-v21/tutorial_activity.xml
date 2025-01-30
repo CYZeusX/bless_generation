@@ -6,7 +6,7 @@
     android:id="@+id/tutorial_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/greets">
+    android:background="@color/gray_240">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -69,7 +69,7 @@
             android:layout_marginTop="60dp"
             android:elevation="20dp"
             android:text="@string/generate"
-            android:textColor="@color/hint"
+            android:textColor="@color/gray_208"
             android:textSize="50sp"
             android:textStyle="bold" />
 
@@ -90,9 +90,9 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:backgroundTint="@color/greets"
+                android:backgroundTint="@color/gray_240"
                 android:text="@string/copy"
-                android:textColor="@color/dark_gray_1E"
+                android:textColor="@color/gray_09"
                 android:textSize="20sp"
                 app:shapeAppearanceOverlay="@style/copy" />
 
@@ -102,9 +102,9 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:backgroundTint="@color/greets"
+                android:backgroundTint="@color/gray_240"
                 android:text="@string/convert"
-                android:textColor="@color/dark_gray_1E"
+                android:textColor="@color/gray_09"
                 android:textSize="20sp"
                 app:shapeAppearanceOverlay="@style/convert" />
         </LinearLayout>

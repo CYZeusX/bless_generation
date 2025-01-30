@@ -6,7 +6,7 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/greets">
+    android:background="@color/gray_240">
 
     <LinearLayout
         android:id="@+id/bar"
@@ -132,7 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/generate"
-                android:textColor="@color/hint"
+                android:textColor="@color/gray_208"
                 android:textSize="50sp"
                 android:textStyle="bold" />
         </RelativeLayout>
@@ -153,9 +153,9 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:backgroundTint="@color/greets"
+                android:backgroundTint="@color/gray_240"
                 android:text="@string/copy"
-                android:textColor="@color/dark_gray_1E"
+                android:textColor="@color/gray_09"
                 android:textSize="20sp"
                 app:shapeAppearanceOverlay="@style/copy" />
 
@@ -165,9 +165,9 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:backgroundTint="@color/greets"
+                android:backgroundTint="@color/gray_240"
                 android:text="@string/convert"
-                android:textColor="@color/dark_gray_1E"
+                android:textColor="@color/gray_09"
                 android:textSize="20sp"
                 app:shapeAppearanceOverlay="@style/convert" />
         </LinearLayout>
@@ -230,7 +230,7 @@
             android:backgroundTint="@color/nul"
             android:text="@string/show_greets"
             android:textAlignment="center"
-            android:textColor="@color/dark_gray_1E"
+            android:textColor="@color/gray_09"
             android:textSize="35sp"
             android:textStyle="bold"
             app:cornerRadius="50dp" />
@@ -260,13 +260,13 @@
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_alignParentTop="true"
-        android:background="@color/greets"
+        android:background="@color/gray_240"
         android:hint="@string/name_hint"
         android:inputType="text"
         android:paddingStart="26dp"
         android:paddingLeft="26dp"
         android:textColor="@color/black"
-        android:textColorHint="@color/hint"
+        android:textColorHint="@color/gray_208"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -298,7 +298,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
                 android:text="@string/tutorial"
-                android:textColor="@color/gray"
+                android:textColor="@color/gray_150"
                 android:textSize="33sp"/>
         </ScrollView>
     </com.bosphere.fadingedgelayout.FadingEdgeLayout>
@@ -317,10 +317,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/set3"
+            android:backgroundTint="@color/gray_30"
             android:text="@string/junior"
             android:textAlignment="center"
-            android:textColor="@color/btnBg"
+            android:textColor="@color/gray_64"
             android:textSize="20sp"
             app:shapeAppearanceOverlay="@style/copy" />
 
@@ -329,10 +329,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/set3"
+            android:backgroundTint="@color/gray_30"
             android:text="@string/medior"
             android:textAlignment="center"
-            android:textColor="@color/btnBg"
+            android:textColor="@color/gray_64"
             android:textSize="20sp"
             app:cornerRadius="0dp" />
 
@@ -341,10 +341,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/set3"
+            android:backgroundTint="@color/gray_30"
             android:text="@string/senior"
             android:textAlignment="center"
-            android:textColor="@color/btnBg"
+            android:textColor="@color/gray_64"
             android:textSize="20sp"
             app:shapeAppearanceOverlay="@style/convert" />
     </LinearLayout>

@@ -7,5 +7,5 @@
     android:gravity="center"
     android:textAlignment="center"
     android:textSize="20sp"
-    android:textColor="@color/btnB"
+    android:textColor="@color/gray_200"
     tools:ignore="RtlSymmetry" />

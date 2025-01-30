@@ -33,20 +33,20 @@ public class MainActivity extends AppCompatActivity
 {
     private final String[] STAGES = {"(選階段)","童年","青年","成年","老年"};
     private final String[] FESTIVALS = {"新年","父親節","母親節","生日"};
+    public Button showBlessing;
     public Button emojiButton;
     public Button copyButton;
     public Button convertButton;
-    public Button showBlessing;
     public Button juniorRankButton;
     public Button peerRankButton;
     public Button seniorRankButton;
     public Spinner stageSpinner;
-    public String rankDefault = "peer"; //2
     private boolean emojiMode = false; //false = emoji disabled
     private int nullSpin = 0;
-    private String textMode = "mail";
     public TextView textField;
     private EditText targetName;
+    public String rankDefault = "peer"; //2
+    private String textMode = "mail";
     public String show_Greet;
     private final CustomSetting CUSTOM_SETTING = new CustomSetting();
     private final ArrayList<String> RECORDS = new ArrayList<>(2);
@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity
         {
             rankButtons[i].setTextSize(i == selectedIndex ? 20 : 18);
             rankButtons[i].setTextColor(ContextCompat.getColor(this,
-                    i == selectedIndex ? R.color.btnB : R.color.btnBg));
+                    i == selectedIndex ? R.color.gray_200 : R.color.gray_64));
         }
     }
 
@@ -468,8 +468,7 @@ public class MainActivity extends AppCompatActivity
         byDefault(!isDefault);
 
         if (textField.getText().toString().equals(show_Greet))
-        {
-            emojiButton.setVisibility(View.INVISIBLE);}
+        {emojiButton.setVisibility(View.INVISIBLE);}
     }
 
     private Boolean checkEnglish(String name)

@@ -17,11 +17,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/set3"
+            android:backgroundTint="@color/gray_30"
             android:gravity="center_horizontal"
             android:text="@string/junior"
             android:textAlignment="center"
-            android:textColor="@color/btnBg"
+            android:textColor="@color/gray_64"
             android:textSize="20sp"
             app:shapeAppearanceOverlay="@style/copy" />
 
@@ -30,11 +30,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/set3"
+            android:backgroundTint="@color/gray_30"
             android:gravity="center_horizontal"
             android:text="@string/medior"
             android:textAlignment="center"
-            android:textColor="@color/btnBg"
+            android:textColor="@color/gray_64"
             android:textSize="20sp"
             app:cornerRadius="0dp" />
 
@@ -43,11 +43,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="@color/set3"
+            android:backgroundTint="@color/gray_30"
             android:gravity="center_horizontal"
             android:text="@string/senior"
             android:textAlignment="center"
-            android:textColor="@color/btnBg"
+            android:textColor="@color/gray_64"
             android:textSize="20sp"
             app:shapeAppearanceOverlay="@style/convert" />
     </LinearLayout>

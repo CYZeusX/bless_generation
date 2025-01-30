@@ -26,7 +26,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:textColor="@color/hint"
+            android:textColor="@color/gray_208"
             android:textSize="35sp"/>
 
         <com.google.android.exoplayer2.ui.PlayerView
