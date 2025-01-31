@@ -2,6 +2,7 @@ package com.CYZco.nygreets;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.graphics.Color;
@@ -76,6 +77,8 @@ public class CustomSetting extends DialogFragment
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
+                if (!isAdded()) return;
+
                 String selectedItem = parent.getItemAtPosition(position).toString();
                 setSpinner(selectedItem);
             }
@@ -160,25 +163,26 @@ public class CustomSetting extends DialogFragment
 
     public void checkRankLevel(String rankLevel)
     {
-        if (isAdded()|| getActivity() == null) return;
+        if (isAdded() || getActivity() == null) return;
 
         MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity == null) return;
-
-        Button[] rankButtons = new Button[]{juniorRankButton, peerRankButton, seniorRankButton};
-        mainActivity.emojiButton.setVisibility(View.VISIBLE);
-
-        // Map rankLevel to index
-        int selectedIndex = 1; // Default to "peer" (index 1)
-        if (rankLevel.equals("junior")) selectedIndex = 0;
-        else if (rankLevel.equals("senior")) selectedIndex = 2;
-
-        // Update button styles
-        for (int i = 0; i < rankButtons.length; i++)
+        if (mainActivity != null)
         {
-            rankButtons[i].setTextSize(i == selectedIndex ? 20 : 18);
-            rankButtons[i].setTextColor(ContextCompat.getColor(requireContext(),
-                    i == selectedIndex ? R.color.gray_200 : R.color.gray_64));
+            Button[] rankButtons = new Button[]{juniorRankButton, peerRankButton, seniorRankButton};
+            mainActivity.emojiButton.setVisibility(View.VISIBLE);
+
+            // Map rankLevel to index
+            int selectedIndex = 1; // Default to "peer" (index 1)
+            if (rankLevel.equals("junior")) selectedIndex = 0;
+            else if (rankLevel.equals("senior")) selectedIndex = 2;
+
+            // Update button styles
+            for (int i = 0; i < rankButtons.length; i++)
+            {
+                rankButtons[i].setTextSize(i == selectedIndex ? 20 : 18);
+                rankButtons[i].setTextColor(ContextCompat.getColor(requireContext(),
+                        i == selectedIndex ? R.color.gray_200 : R.color.gray_64));
+            }
         }
     }
 
@@ -186,6 +190,7 @@ public class CustomSetting extends DialogFragment
     public void onStart()
     {
         super.onStart();
+        Log.d("CustomSetting", "onStart called for CustomSetting fragment");
         if (getDialog() != null && getDialog().getWindow() != null)
         {
             getDialog().getWindow().setLayout(
@@ -198,20 +203,24 @@ public class CustomSetting extends DialogFragment
             {
                 rootView = requireActivity().getWindow().getDecorView().getRootView();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
-                {
                     rootView.setRenderEffect(RenderEffect.createBlurEffect(10, 10, Shader.TileMode.MIRROR));
-                }
             }
 
         }
     }
 
     @Override
-    public void onStop() {
+    public void onStop()
+    {
         super.onStop();
         // Remove blur effect when the dialog is dismissed
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && rootView != null) {
-            rootView.setRenderEffect(null);
+
+        if (!stageSpinner.getSelectedItem().toString().equals("(選階段)"))
+        {
+            mainActivity.settingPlace.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.tutorial_card));
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && rootView != null)
+            rootView.setRenderEffect(null);
     }
 }

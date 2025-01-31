@@ -1,11 +1,14 @@
 package com.CYZco.nygreets;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.animation.AnimationUtils;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ClipboardManager;
 import android.view.animation.Animation;
@@ -32,6 +35,7 @@ import android.os.Build;
 
 public class MainActivity extends AppCompatActivity
 {
+    public RelativeLayout settingPlace;
     public Button showBlessing;
     public Button emojiButton;
     public Button copyButton;
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity
         RelativeLayout generatePlace = findViewById(R.id.generate_place);
         Button tutorialButton = findViewById(R.id.tut_button);
         Button homeButton = findViewById(R.id.home_button);
+        settingPlace = findViewById(R.id.setting_Area);
         settingButton = findViewById(R.id.settingButton);
         convertButton = findViewById(R.id.convert_btn);
         showBlessing = findViewById(R.id.show_button);
@@ -125,11 +130,20 @@ public class MainActivity extends AppCompatActivity
 
         generateButton.setOnClickListener(v ->
         {
-            if (CUSTOM_SETTING.stageSpinner == null || CUSTOM_SETTING.stageSpinner.getSelectedItem() == null)
+            if (CUSTOM_SETTING.stageSpinner == null)
             {
+                Log.d("MainActivity", "stageSpinner is null");
                 setRemindText();
                 return;
             }
+
+            if (CUSTOM_SETTING.stageSpinner.getSelectedItem() == null)
+            {
+                Log.d("MainActivity", "stageSpinner.getSelectedItem() is null");
+                setRemindText();
+                return;
+            }
+
             setGreet(CUSTOM_SETTING.stageSpinner.getSelectedItem().toString());
         });
 
@@ -244,13 +258,10 @@ public class MainActivity extends AppCompatActivity
         settingButton.setOnClickListener(v ->
         {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            Fragment existingFragment = fragmentManager.findFragmentByTag("settingButton");
+            Fragment fragment = fragmentManager.findFragmentByTag("CustomSetting");
 
-            if (existingFragment == null)
-            {
-                CustomSetting CUSTOM_SETTING = new CustomSetting();
-                CUSTOM_SETTING.show(getSupportFragmentManager(), "settingButton");
-            }
+            if (fragment == null)
+                CUSTOM_SETTING.show(getSupportFragmentManager(), "CustomSetting");
         });
 
         tutorialButton.setOnClickListener(v ->
@@ -314,14 +325,12 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("SetTextI18n")
     private void setRemindText()
     {
-        RelativeLayout settingPlace = findViewById(R.id.setting_Area);
-
         nullSpin = !nullSpin;
         textField.setTextSize(33);
         textField.setText(R.string.tutorial);
-        int gray = !nullSpin ? R.drawable.red_r10_out7 : R.drawable.green_r10_out7;
+        int flash = !nullSpin ? R.drawable.red_r10_out7 : R.drawable.green_r10_out7;
         int color = !nullSpin ? R.color.red : R.color.green ;
-        settingPlace.setBackground(ContextCompat.getDrawable(MainActivity.this, gray));
+        settingPlace.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
         textField.setTextColor(getResources().getColor(color));
     }
 
@@ -349,6 +358,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         textField.setTextColor(Color.BLACK);
+        settingPlace.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.tutorial_card));
         String ysEmoji = newGreet(blessArrays);
         String noEmoji = cutEmoji(ysEmoji);
         saveBlesses.set(0, ysEmoji);
