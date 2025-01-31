@@ -7,12 +7,10 @@ The current progress is working on the Tutorial Page, where it introduces the us
 This App will never be finished, since there is no end, but improvements everyday instead.
 
 ## What next? :
-- a new UI again
 - correct logic for video card button
 - will record video and place them to their own place
 
 ## Current Progress :
-- studying how to invoke new window/layout for additional buttons
 - working on method to watch the tutorial video
 
 ## New Features implemented :
@@ -20,3 +18,5 @@ This App will never be finished, since there is no end, but improvements everyda
 - re-designed the app icon
 - added animation to the large button layout
 - added animation for activity switching
+- added new window/layout for additional setting buttons
+- redesigned a new UI
