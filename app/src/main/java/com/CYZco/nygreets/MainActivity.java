@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.animation.AnimationUtils;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import android.content.ClipboardManager;
 import android.view.animation.Animation;
 import android.annotation.SuppressLint;
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         RelativeLayout generatePlace = findViewById(R.id.generate_place);
         Button tutorialButton = findViewById(R.id.tut_button);
         Button homeButton = findViewById(R.id.home_button);
-        settingButton = findViewById(R.id.setting);
+        settingButton = findViewById(R.id.settingButton);
         convertButton = findViewById(R.id.convert_btn);
         showBlessing = findViewById(R.id.show_button);
         emojiButton = findViewById(R.id.emojiAdd);
@@ -239,7 +242,16 @@ public class MainActivity extends AppCompatActivity
         homeButton.setOnClickListener(v -> {});
 
         settingButton.setOnClickListener(v ->
-                CUSTOM_SETTING.show(getSupportFragmentManager(), "settingButton"));
+        {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            Fragment existingFragment = fragmentManager.findFragmentByTag("settingButton");
+
+            if (existingFragment == null)
+            {
+                CustomSetting CUSTOM_SETTING = new CustomSetting();
+                CUSTOM_SETTING.show(getSupportFragmentManager(), "settingButton");
+            }
+        });
 
         tutorialButton.setOnClickListener(v ->
         {
@@ -302,12 +314,14 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("SetTextI18n")
     private void setRemindText()
     {
+        RelativeLayout settingPlace = findViewById(R.id.setting_Area);
+
         nullSpin = !nullSpin;
         textField.setTextSize(33);
         textField.setText(R.string.tutorial);
-        int gray = !nullSpin ? R.drawable.rect_round10_stroke7_red : R.drawable.rect_round10_stroke7_green;
+        int gray = !nullSpin ? R.drawable.red_r10_out7 : R.drawable.green_r10_out7;
         int color = !nullSpin ? R.color.red : R.color.green ;
-        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, gray));
+        settingPlace.setBackground(ContextCompat.getDrawable(MainActivity.this, gray));
         textField.setTextColor(getResources().getColor(color));
     }
 

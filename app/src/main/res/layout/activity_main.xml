@@ -51,12 +51,23 @@
                 android:textStyle="bold" />
         </RelativeLayout>
 
-        <Button
-            android:id="@+id/setting"
+        <RelativeLayout
+            android:id="@+id/setting_Area"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1">
-        </Button>
+
+            <Button
+                android:id="@+id/settingButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_centerInParent="true">
+            </Button>
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/barR"
@@ -299,7 +310,7 @@
                 android:layout_marginTop="30dp"
                 android:text="@string/tutorial"
                 android:textColor="@color/gray_150"
-                android:textSize="33sp"/>
+                android:textSize="33sp" />
         </ScrollView>
     </com.bosphere.fadingedgelayout.FadingEdgeLayout>
 
