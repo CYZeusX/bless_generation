@@ -177,11 +177,11 @@ public class CustomSetting extends DialogFragment
             else if (rankLevel.equals("senior")) selectedIndex = 2;
 
             // Update button styles
-            for (int i = 0; i < rankButtons.length; i++)
+            for (int count = 0; count < rankButtons.length; count++)
             {
-                rankButtons[i].setTextSize(i == selectedIndex ? 20 : 18);
-                rankButtons[i].setTextColor(ContextCompat.getColor(requireContext(),
-                        i == selectedIndex ? R.color.gray_200 : R.color.gray_64));
+                rankButtons[count].setTextSize(count == selectedIndex ? 20 : 18);
+                rankButtons[count].setTextColor(count == selectedIndex ? Color.GRAY : Color.WHITE);
+                        //count == selectedIndex ? R.color.gray_200 : R.color.gray_64));
             }
         }
     }

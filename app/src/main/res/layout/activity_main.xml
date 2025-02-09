@@ -55,7 +55,7 @@
 
             <ImageView
                 android:id="@+id/setting_icon"
-                android:layout_width="30dp"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
@@ -77,10 +77,10 @@
 
             <ImageView
                 android:id="@+id/tutorial_icon"
-                android:layout_width="30dp"
+                android:layout_width="38dp"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
                 android:adjustViewBounds="true"
+                android:layout_centerInParent="true"
                 android:src="@drawable/tutorial_icon_gray" />
         </RelativeLayout>
     </LinearLayout>
@@ -258,7 +258,7 @@
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:layout_alignParentTop="true"
-        android:background="@color/gray_240"
+        android:background="@color/nul"
         android:hint="@string/name_hint"
         android:inputType="text"
         android:paddingStart="26dp"
@@ -266,6 +266,7 @@
         android:textColor="@color/black"
         android:textColorHint="@color/gray_208"
         android:textSize="23sp"
+        android:elevation="-1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
@@ -273,10 +274,12 @@
     <com.bosphere.fadingedgelayout.FadingEdgeLayout
         android:id="@+id/fading_edge_layout"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="0dp"
         app:fel_edge="top|bottom"
         app:fel_size_bottom="20dp"
         app:fel_size_top="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/generate_place"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -284,21 +287,22 @@
 
         <ScrollView
             android:id="@+id/showGreet_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:background="@drawable/rect_round15"
-            android:paddingLeft="15dp">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_centerInParent="true"
+            android:background="@drawable/rect_round15">
 
             <TextView
                 android:id="@+id/greets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
+                android:layout_gravity="fill"
                 android:text="@string/tutorial"
                 android:textColor="@color/gray_150"
                 android:textSize="33sp" />
         </ScrollView>
+
     </com.bosphere.fadingedgelayout.FadingEdgeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

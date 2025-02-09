@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity
                 greet.append(arrays);
             }
 
-            show_Greet = greet.toString();
+            show_Greet = "\n" + greet + "\n";
             String text;
             String check = textField.getText().toString();
 
@@ -275,29 +275,23 @@ public class MainActivity extends AppCompatActivity
     {
         textMode = "mail";
         CUSTOM_SETTING.checkRankLevel(rankLevel);
-        String dear = "\n\n親愛的 ";
-        String names = targetName.getText().toString();
-        String space1 = " "; // for align
-        String zhu = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
-        String ny = "新年快樂!";
-        String space2 = "\n "; // important for emoji
+        String dear = "親愛的 ";
+        String name = targetName.getText().toString();
+        String wish = Objects.equals(emoji, "y") ? " \u3297\uFE0F" : " 祝";
+        String happyNewYear = "新年快樂!";
+        String formatAlign = "\n  "; // important for emoji
 
-        if (!names.isEmpty())
-        {
-            if (!rankDefault.equals("senior"))
-            {names += ":\n";}
-            else {names += "";}
-        }
+        if (!name.isEmpty())
+            name += !rankDefault.equals("senior") ? ":\n" : "";
 
         if (rankLevel.equals("junior"))
-        {names = surname(names);}
+            name = surname(name);
 
-        String dearY = dear + names + ":\n" + space1 + zhu + "您" + ny + space2 + greet;
-        String dearN = "\n\n" + names + space1 + zhu + "你" + ny + space2 + greet;
+        String dearY = dear + name + ":\n " + wish + "您" + happyNewYear + formatAlign + greet;
+        String dearN = name + wish + "你" + happyNewYear + formatAlign + greet;
 
         String sentence;
-        if (rankLevel.equals("senior")) {sentence = dearY;}
-        else {sentence = dearN;}
+        sentence = rankLevel.equals("senior") ? dearY : dearN;
 
         addRecord(sentence);
         textField.setTextSize(24f);
@@ -313,9 +307,9 @@ public class MainActivity extends AppCompatActivity
         String names = targetName.getText().toString();
 
         if (rankLevel.equals("junior"))
-        {names = surname(names);}
+            names = surname(names);
 
-        String sentence = "\n\n" + zhu + names + "新年快樂!  " + greet;
+        String sentence = zhu + names + "新年快樂!  " + greet;
         addRecord(sentence);
         textField.setTextSize(24f);
         textField.setText(sentence);

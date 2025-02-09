@@ -10,5 +10,5 @@
     <string name="convert">格式 ⇆</string>
     <string name="copy">copy ⏍</string>
     <string name="emoji">😄</string>
-    <string name="tutorial">\n生成祝福前\n請選擇階段</string>
+    <string name="tutorial">生成祝福前\n請選擇階段</string>
 </resources>

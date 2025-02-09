@@ -187,7 +187,7 @@
 
             <ImageView
                 android:id="@+id/tutorial_icon"
-                android:layout_width="30dp"
+                android:layout_width="38dp"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:layout_centerInParent="true"
