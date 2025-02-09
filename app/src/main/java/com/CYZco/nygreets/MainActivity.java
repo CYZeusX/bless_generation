@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.ClipboardManager;
 import android.view.animation.Animation;
@@ -328,9 +327,9 @@ public class MainActivity extends AppCompatActivity
         nullSpin = !nullSpin;
         textField.setTextSize(33);
         textField.setText(R.string.tutorial);
-        int flash = !nullSpin ? R.drawable.red_r10_out7 : R.drawable.green_r10_out7;
+        int flash = !nullSpin ? R.drawable.red_o10_out7 : R.drawable.green_o10_out7;
         int color = !nullSpin ? R.color.red : R.color.green ;
-        settingPlace.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
+        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
         textField.setTextColor(getResources().getColor(color));
     }
 
@@ -357,8 +356,9 @@ public class MainActivity extends AppCompatActivity
                 return;
         }
 
+        emojiButton.setVisibility(View.VISIBLE);
+        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.oval));
         textField.setTextColor(Color.BLACK);
-        settingPlace.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.tutorial_card));
         String ysEmoji = newGreet(blessArrays);
         String noEmoji = cutEmoji(ysEmoji);
         saveBlesses.set(0, ysEmoji);

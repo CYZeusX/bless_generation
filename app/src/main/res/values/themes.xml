@@ -13,5 +13,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="21">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="materialButtonStyle">@style/NoThemeButton</item>
+        <item name="fontFamily">@font/open_huninn</item>
     </style>
 </resources>

@@ -1,4 +1,5 @@
 <resources>
+    <string name="nul"></string>
     <string name="name_hint">請輸入稱呼</string>
     <string name="junior">晚輩</string>
     <string name="medior">平輩</string>

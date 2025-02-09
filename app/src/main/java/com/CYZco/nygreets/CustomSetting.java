@@ -39,7 +39,7 @@ public class CustomSetting extends DialogFragment
         super.onViewCreated(view, savedInstanceState);
 
         String[] STAGES = {"(選階段)", "童年", "青年", "成年", "老年"};
-        String[] FESTIVALS = {"新年","父親節","母親節","生日"};
+        String[] FESTIVALS = {"新年","父親節 (敬請期待)","母親節 (敬請期待)","生日 (敬請期待)"};
         stageSpinner = view.findViewById(R.id.stage_spinner);
         festivalSelector = view.findViewById(R.id.festival);
         juniorRankButton = view.findViewById(R.id.rank1);
@@ -215,9 +215,13 @@ public class CustomSetting extends DialogFragment
         super.onStop();
         // Remove blur effect when the dialog is dismissed
 
-        if (!stageSpinner.getSelectedItem().toString().equals("(選階段)"))
+        if (stageSpinner.getSelectedItem().toString().equals("(選階段)"))
         {
-            mainActivity.settingPlace.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.tutorial_card));
+            mainActivity.settingButton.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.red_o10_out7));
+        }
+        else
+        {
+            mainActivity.settingButton.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.oval));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && rootView != null)
