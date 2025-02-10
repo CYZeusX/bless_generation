@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity
     public void setBlessingMail(String rankLevel, String emoji, String greet)
     {
         textMode = "mail";
-        CUSTOM_SETTING.checkRankLevel(rankLevel);
+        CUSTOM_SETTING.rankLevelColourChange(rankLevel);
         String dear = "親愛的 ";
         String name = targetName.getText().toString();
         String wish = Objects.equals(emoji, "y") ? " \u3297\uFE0F" : " 祝";
@@ -301,7 +301,7 @@ public class MainActivity extends AppCompatActivity
     public void setBlessingLineText(String rankLevel, String emoji, String greet)
     {
         textMode = "line";
-        CUSTOM_SETTING.checkRankLevel(rankLevel);
+        CUSTOM_SETTING.rankLevelColourChange(rankLevel);
 
         String zhu = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
         String names = targetName.getText().toString();
@@ -361,9 +361,9 @@ public class MainActivity extends AppCompatActivity
         String yn = emojiMode ? "y" : "n" ;
 
         if (textMode.equals("mail"))
-        {setBlessingMail(rankDefault, yn, mesDecide);}
+            setBlessingMail(rankDefault, yn, mesDecide);
         if (textMode.equals("line"))
-        {setBlessingLineText(rankDefault, yn, mesDecide);}
+            setBlessingLineText(rankDefault, yn, mesDecide);
     }
 
     public String cutEmoji(String text)
@@ -377,14 +377,14 @@ public class MainActivity extends AppCompatActivity
     @SuppressLint("ResourceAsColor")
     public void byDefault(boolean bool)
     {
-        int visa = bool ? View.VISIBLE : View.INVISIBLE;
+        int visibility = bool ? View.VISIBLE : View.INVISIBLE;
         copyButton.setEnabled(bool);
         convertButton.setEnabled(bool);
         CUSTOM_SETTING.juniorRankButton.setEnabled(bool);
         CUSTOM_SETTING.peerRankButton.setEnabled(bool);
         CUSTOM_SETTING.seniorRankButton.setEnabled(bool);
-        showBlessing.setVisibility(visa);
-        emojiButton.setVisibility(visa);
+        showBlessing.setVisibility(visibility);
+        emojiButton.setVisibility(visibility);
     }
 
     private Boolean checkEnglish(String name)

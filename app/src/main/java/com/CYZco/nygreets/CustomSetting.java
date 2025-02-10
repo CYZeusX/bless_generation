@@ -1,9 +1,9 @@
 package com.CYZco.nygreets;
 
 import android.os.Build;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.os.Bundle;
 import android.widget.Button;
 import android.graphics.Color;
 import android.widget.Spinner;
@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import android.graphics.RenderEffect;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
+
+import java.util.Objects;
 
 public class CustomSetting extends DialogFragment
 {
@@ -39,7 +41,7 @@ public class CustomSetting extends DialogFragment
         super.onViewCreated(view, savedInstanceState);
 
         String[] STAGES = {"(選階段)", "童年", "青年", "成年", "老年"};
-        String[] FESTIVALS = {"新年","父親節 (敬請期待)","母親節 (敬請期待)","生日 (敬請期待)"};
+        String[] FESTIVALS = {"新年","父親節 [敬請期待]","母親節 [敬請期待]","生日 [敬請期待]"};
         stageSpinner = view.findViewById(R.id.stage_spinner);
         festivalSelector = view.findViewById(R.id.festival);
         juniorRankButton = view.findViewById(R.id.rank1);
@@ -85,6 +87,7 @@ public class CustomSetting extends DialogFragment
             @Override public void onNothingSelected(AdapterView<?> parent) {}
         });
 
+        rankLevelColourChange(mainActivity.rankDefault);
     }
 
     private void rankButtonSetting(Button button, String rank)
@@ -124,9 +127,7 @@ public class CustomSetting extends DialogFragment
             }
 
             if (stageSpinner != null)
-            {
                 stageSpinner.setBackground(ContextCompat.getDrawable(mainActivity, spinnerDrawable));
-            }
 
             mainActivity.byDefault(!isDefault);
 
@@ -137,12 +138,10 @@ public class CustomSetting extends DialogFragment
 
     public void rankButton()
     {
-        if (isAdded() || getActivity() != null) return;
-
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null)
         {
-            checkRankLevel(mainActivity.rankDefault);
+            rankLevelColourChange(mainActivity.rankDefault);
 
             if (!mainActivity.saveBlesses.get(0).isEmpty())
             {
@@ -150,38 +149,37 @@ public class CustomSetting extends DialogFragment
                 String yn = mainActivity.emojiMode ? "y" : "n";
 
                 if (mainActivity.textMode.equals("mail"))
-                {
-                    mainActivity.setBlessingMail(mainActivity.rankDefault, yn, greet);}
+                    mainActivity.setBlessingMail(mainActivity.rankDefault, yn, greet);
                 if (mainActivity.textMode.equals("line"))
-                {
-                    mainActivity.setBlessingLineText(mainActivity.rankDefault, yn, greet);}
+                    mainActivity.setBlessingLineText(mainActivity.rankDefault, yn, greet);
                 mainActivity.addRecord(mainActivity.textField.getText().toString());
             }
         }
-
     }
 
-    public void checkRankLevel(String rankLevel)
+    public void rankLevelColourChange(String rankLevel)
     {
-        if (isAdded() || getActivity() == null) return;
-
         MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null)
         {
-            Button[] rankButtons = new Button[]{juniorRankButton, peerRankButton, seniorRankButton};
+            Button[] rankButtons = new Button[] {juniorRankButton, peerRankButton, seniorRankButton};
             mainActivity.emojiButton.setVisibility(View.VISIBLE);
 
             // Map rankLevel to index
-            int selectedIndex = 1; // Default to "peer" (index 1)
-            if (rankLevel.equals("junior")) selectedIndex = 0;
-            else if (rankLevel.equals("senior")) selectedIndex = 2;
+            int selectedIndex = switch (rankLevel)
+            {
+                case "junior" -> 0;
+                case "peer" -> 1;
+                case "senior" -> 2;
+                default -> 1; // Default to "peer" (index 1)
+            };
 
             // Update button styles
             for (int count = 0; count < rankButtons.length; count++)
             {
-                rankButtons[count].setTextSize(count == selectedIndex ? 20 : 18);
-                rankButtons[count].setTextColor(count == selectedIndex ? Color.GRAY : Color.WHITE);
-                        //count == selectedIndex ? R.color.gray_200 : R.color.gray_64));
+                rankButtons[count].setTextSize(count == selectedIndex ? 20 : 16);
+                rankButtons[count].setTextColor(ContextCompat.getColor(requireContext(),
+                        count == selectedIndex ? R.color.gray_200 : R.color.gray_64));
             }
         }
     }
@@ -205,7 +203,6 @@ public class CustomSetting extends DialogFragment
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S)
                     rootView.setRenderEffect(RenderEffect.createBlurEffect(10, 10, Shader.TileMode.MIRROR));
             }
-
         }
     }
 
@@ -215,14 +212,8 @@ public class CustomSetting extends DialogFragment
         super.onStop();
         // Remove blur effect when the dialog is dismissed
 
-        if (stageSpinner.getSelectedItem().toString().equals("(選階段)"))
-        {
-            mainActivity.settingButton.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.red_o10_out7));
-        }
-        else
-        {
-            mainActivity.settingButton.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.oval));
-        }
+        mainActivity.settingButton.setBackground(ContextCompat.getDrawable(requireContext()
+                , stageSpinner.getSelectedItem().toString().equals("(選階段)") ? R.drawable.red_o10_out7 : R.drawable.oval));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && rootView != null)
             rootView.setRenderEffect(null);
