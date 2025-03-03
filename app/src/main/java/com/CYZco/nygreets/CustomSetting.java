@@ -19,8 +19,6 @@ import android.graphics.RenderEffect;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
-import java.util.Objects;
-
 public class CustomSetting extends DialogFragment
 {
     private View rootView;
@@ -41,7 +39,7 @@ public class CustomSetting extends DialogFragment
         super.onViewCreated(view, savedInstanceState);
 
         String[] STAGES = {"(選階段)", "童年", "青年", "成年", "老年"};
-        String[] FESTIVALS = {"新年","父親節 [敬請期待]","母親節 [敬請期待]","生日 [敬請期待]"};
+        String[] FESTIVALS = {"新年","父..[敬請期待]","母..[敬請期待]","生..[敬請期待]"}; // "父親節","母親節","生日"};
         stageSpinner = view.findViewById(R.id.stage_spinner);
         festivalSelector = view.findViewById(R.id.festival);
         juniorRankButton = view.findViewById(R.id.rank1);
@@ -117,7 +115,7 @@ public class CustomSetting extends DialogFragment
         {
             Button emojiButton = mainActivity.emojiButton;
             TextView textField = mainActivity.textField;
-            int spinnerDrawable = R.drawable.rect_round10_stroke1;
+            int spinnerDrawable = R.drawable.rect_round30_stroke1;
 
             if (isDefault)
             {
@@ -177,7 +175,7 @@ public class CustomSetting extends DialogFragment
             // Update button styles
             for (int count = 0; count < rankButtons.length; count++)
             {
-                rankButtons[count].setTextSize(count == selectedIndex ? 20 : 16);
+                rankButtons[count].setTextSize(count == selectedIndex ? 28 : 20);
                 rankButtons[count].setTextColor(ContextCompat.getColor(requireContext(),
                         count == selectedIndex ? R.color.gray_200 : R.color.gray_64));
             }

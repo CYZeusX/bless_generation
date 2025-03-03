@@ -1,14 +1,12 @@
 package com.CYZco.nygreets;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.animation.AnimationUtils;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-
 import android.content.ClipboardManager;
 import android.view.animation.Animation;
 import android.annotation.SuppressLint;
@@ -123,12 +121,12 @@ public class MainActivity extends AppCompatActivity
         targetName = findViewById(R.id.name);
 
         showTextScroller.setVerticalScrollBarEnabled(false);
-
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         generatePlace.startAnimation(slideUp);
 
         generateButton.setOnClickListener(v ->
         {
+
             if (CUSTOM_SETTING.stageSpinner == null)
             {
                 Log.d("MainActivity", "stageSpinner is null");
@@ -142,6 +140,7 @@ public class MainActivity extends AppCompatActivity
                 setRemindText();
                 return;
             }
+
 
             setGreet(CUSTOM_SETTING.stageSpinner.getSelectedItem().toString());
         });
@@ -322,7 +321,7 @@ public class MainActivity extends AppCompatActivity
         textField.setTextSize(33);
         textField.setText(R.string.tutorial);
         int flash = !nullSpin ? R.drawable.red_o10_out7 : R.drawable.green_o10_out7;
-        int color = !nullSpin ? R.color.red : R.color.green ;
+        int color = !nullSpin ? R.color.green : R.color.red;
         settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
         textField.setTextColor(getResources().getColor(color));
     }

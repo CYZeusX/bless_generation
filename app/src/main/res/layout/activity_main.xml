@@ -153,8 +153,8 @@
                 android:gravity="center"
                 android:text="@string/copy"
                 android:textColor="@color/gray_09"
-                android:textSize="20sp"
-                app:shapeAppearanceOverlay="@style/copy" />
+                android:textSize="28sp"
+                app:shapeAppearanceOverlay="@style/cornerLeft_24" />
 
             <Button
                 android:id="@+id/convert_btn"
@@ -166,8 +166,8 @@
                 android:gravity="center"
                 android:text="@string/convert"
                 android:textColor="@color/gray_09"
-                android:textSize="20sp"
-                app:shapeAppearanceOverlay="@style/convert" />
+                android:textSize="28sp"
+                app:shapeAppearanceOverlay="@style/cornerRight_24" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -191,7 +191,7 @@
                 android:id="@+id/imageView"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="3dp"
                 android:src="@drawable/nyg_icon_new" />
 
             <TextView
