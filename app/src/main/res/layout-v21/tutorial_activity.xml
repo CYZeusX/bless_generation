@@ -8,42 +8,32 @@
     android:layout_height="match_parent"
     android:background="@color/gray_240">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="160dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
+    <LinearLayout
+        android:id="@+id/icon_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:elevation="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:id="@+id/icon_bar"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/new_year_greet_icon" />
+
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/nyg_icon_new" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/imageView"
-                android:text="@string/blessTutorial"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-    </RelativeLayout>
-
+            android:layout_gravity="center"
+            android:text="@string/blessTutorial"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/generate_place"
@@ -119,7 +109,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/generate_place"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+        app:layout_constraintTop_toBottomOf="@+id/icon_bar">
 
         <com.bosphere.fadingedgelayout.FadingEdgeLayout
             android:id="@+id/fading_edge_layout"

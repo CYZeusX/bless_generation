@@ -6,9 +6,9 @@
     <string name="senior">長輩</string>
     <string name="generate">生成</string>
     <string name="show_greets">⋮</string>
-    <string name="app_name">生成祝福</string>
+    <string name="app_name">祝福App</string>
     <string name="convert">格式 ⇆</string>
-    <string name="copy">copy ⏍</string>
+    <string name="copy">COPY ⏍</string>
     <string name="emoji">😄</string>
     <string name="tutorial">生成祝福前\n請選擇階段</string>
     <string name="blessTutorial">教學</string>

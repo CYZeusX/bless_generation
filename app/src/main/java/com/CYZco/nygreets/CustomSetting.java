@@ -39,7 +39,7 @@ public class CustomSetting extends DialogFragment
         super.onViewCreated(view, savedInstanceState);
 
         String[] STAGES = {"(選階段)", "童年", "青年", "成年", "老年"};
-        String[] FESTIVALS = {"新年","父..[敬請期待]","母..[敬請期待]","生..[敬請期待]"}; // "父親節","母親節","生日"};
+        String[] FESTIVALS = {"新年","父..[敬請期待]","母..[敬請期待]","生..[敬請期待]", "生病[敬請期待]"}; // "父親節","母親節","生日"};
         stageSpinner = view.findViewById(R.id.stage_spinner);
         festivalSelector = view.findViewById(R.id.festival);
         juniorRankButton = view.findViewById(R.id.rank1);

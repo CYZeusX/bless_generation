@@ -124,7 +124,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:fontFamily="@font/open_huninn"
                 android:shadowColor="@color/white"
                 android:shadowRadius="10"
                 android:text="@string/generate"
@@ -132,7 +131,6 @@
                 android:textSize="55sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
 
         <LinearLayout
             android:id="@+id/copy_and_convert"
@@ -171,41 +169,34 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout2"
-        android:layout_width="160dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:elevation="15dp"
+    <LinearLayout
+        android:id="@+id/icon_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
-        <RelativeLayout
-            android:id="@+id/icon_bar"
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/new_year_greet_icon" />
+
+        <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="3dp"
-                android:src="@drawable/nyg_icon_new" />
-
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/imageView"
-                android:text="@string/app_name"
-                android:textColor="@color/black"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
-    </RelativeLayout>
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_toEndOf="@+id/imageView"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/emoji_show_place"
@@ -259,6 +250,7 @@
         android:layout_height="58dp"
         android:layout_alignParentTop="true"
         android:background="@color/nul"
+        android:elevation="-1dp"
         android:hint="@string/name_hint"
         android:inputType="text"
         android:paddingStart="26dp"
@@ -266,10 +258,9 @@
         android:textColor="@color/black"
         android:textColorHint="@color/gray_208"
         android:textSize="23sp"
-        android:elevation="-1dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/icon_bar" />
 
     <com.bosphere.fadingedgelayout.FadingEdgeLayout
         android:id="@+id/fading_edge_layout"
