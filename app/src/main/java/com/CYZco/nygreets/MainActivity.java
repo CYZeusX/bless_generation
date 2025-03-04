@@ -1,23 +1,22 @@
 package com.CYZco.nygreets;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
+import androidx.fragment.app.FragmentManager;
 import android.view.animation.AnimationUtils;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import android.content.ClipboardManager;
 import android.view.animation.Animation;
 import android.annotation.SuppressLint;
+import androidx.fragment.app.Fragment;
 import android.widget.RelativeLayout;
 import android.view.WindowManager;
 import android.widget.ScrollView;
 import android.content.ClipData;
 import android.util.TypedValue;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.graphics.Color;
 import android.content.Intent;
 import android.widget.Button;
@@ -28,6 +27,7 @@ import android.view.View;
 import java.util.Objects;
 import java.util.Arrays;
 import java.util.Random;
+import android.util.Log;
 import android.os.Build;
 
 public class MainActivity extends AppCompatActivity
@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity
             RECORDS.remove(0);
         RECORDS.add(s);
     }
+
     private String newGreet(String[] array)
     {
         String[] copy = Arrays.copyOf(array, array.length);
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null)
-        {actionBar.hide();}
+            actionBar.hide();
 
         ScrollView showTextScroller = findViewById(R.id.showGreet_scroll);
         Button generateButton = findViewById(R.id.generate_button);
@@ -196,7 +197,7 @@ public class MainActivity extends AppCompatActivity
             {
                 String arrays = blessArrays[i];
                 if (i != blessArrays.length-1)
-                {arrays += i % 2 == 0 ? "、" : "、\n" ;}
+                    arrays += i % 2 == 0 ? "、" : "\n" ;
                 greet.append(arrays);
             }
 
@@ -205,18 +206,10 @@ public class MainActivity extends AppCompatActivity
             String check = textField.getText().toString();
 
             boolean shown = check.equals(show_Greet);
-            if (!shown)
-            {
-                text = show_Greet;
-                emojiButton.setVisibility(View.INVISIBLE);
-            }
-            else
-            {
-                text = RECORDS.get(1);
-                emojiButton.setVisibility(View.VISIBLE);
-            }
+            text = shown ? RECORDS.get(1) : show_Greet;
+            emojiButton.setVisibility(shown ? View.VISIBLE : View.INVISIBLE);
 
-            float size = shown? 24f : 19f ;
+            float size = 24f;
             textField.setTextColor(Color.BLACK);
             textField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size);
             textField.setText(text);
@@ -233,9 +226,9 @@ public class MainActivity extends AppCompatActivity
                 String yn = emojiMode? "y" : "n" ;
 
                 if (textMode.equals("mail"))
-                {setBlessingLineText(rankDefault, yn, mesDecide);}
+                    setBlessingLineText(rankDefault, yn, mesDecide);
                 else if (textMode.equals("line"))
-                {setBlessingMail(rankDefault, yn, mesDecide);}
+                    setBlessingMail(rankDefault, yn, mesDecide);
             }
         });
 

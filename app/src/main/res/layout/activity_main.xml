@@ -291,9 +291,7 @@
                 android:layout_gravity="fill"
                 android:text="@string/tutorial"
                 android:textColor="@color/gray_150"
-                android:textSize="33sp" />
+                android:textSize="33sp"/>
         </ScrollView>
-
     </com.bosphere.fadingedgelayout.FadingEdgeLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
