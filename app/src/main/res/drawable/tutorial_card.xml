@@ -17,7 +17,7 @@
         android:top="50dp">
         <shape android:shape="rectangle">
             <gradient
-                android:startColor="@color/dark_red_app"
+                android:startColor="@color/red_285_25"
                 android:centerColor="@color/black"
                 android:endColor="@color/black"
                 android:centerX="30%"

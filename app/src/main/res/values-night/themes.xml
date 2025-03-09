@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.賀語生成" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="android:windowBackground">@color/redB</item>
+        <item name="android:windowBackground">@color/red_225_75</item>
         <item name="colorPrimary">@color/gray_09</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/gray_09</item>

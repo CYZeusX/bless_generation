@@ -15,8 +15,10 @@
     <color name="gray_240">#F0F0F0</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="redB">#E35555</color>
+    <color name="red_285_25">#B91919</color>
     <color name="red">#ff0000</color>
+    <color name="red_225_75">#E14B4B</color>
+    <color name="red_228_85">#E45555</color>
     <color name="app">#FFD278</color>
     <color name="yellow">#FFFF00</color>
     <color name="green">#00FF00</color>
@@ -25,7 +27,6 @@
     <color name="btnD">#6F95B0</color>
     <color name="btick">#4FB6EC</color>
     <color name="blue">#0A41FF</color>
-    <color name="dark_red_app">#B91919</color>
     <color name="tick">#14141E</color>
     <color name="purple_700">#00FFFFFF</color>
 

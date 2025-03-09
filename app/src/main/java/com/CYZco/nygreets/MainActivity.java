@@ -235,11 +235,10 @@ public class MainActivity extends AppCompatActivity
         copyButton.setOnClickListener(e ->
         {
             String getGreet = textField.getText().toString();
-            String satisfy = getGreet.substring(2);
             if (!getGreet.isEmpty())
             {
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData clip = ClipData.newPlainText(null, satisfy);
+                ClipData clip = ClipData.newPlainText(null, getGreet);
                 clipboard.setPrimaryClip(clip);
             }
         });
