@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.CYZco.nygreets"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.CYZco.nygreets"
@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    implementation (libs.multidex)
+    implementation(libs.multidex)
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.exoplayer)

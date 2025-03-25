@@ -1,5 +1,6 @@
 package com.CYZco.nygreets;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,6 +84,13 @@ public class TutorialActivity extends AppCompatActivity
         tut_SCROLL.setLayoutManager(new LinearLayoutManager(this));
         tut_SCROLL.setVerticalScrollBarEnabled(false);
 
+        TutorialAdapter adapter = getTutorialAdapter(path);
+        tut_SCROLL.setAdapter(adapter);
+        tut_SCROLL.scrollToPosition(adapter.getItemCount() - 1);
+    }
+
+    @NonNull
+    private static TutorialAdapter getTutorialAdapter(String path) {
         List<String> videoPaths = new ArrayList<>();
         videoPaths.add(path + R.raw.test);
         videoPaths.add(path + R.raw.start_choose);
@@ -106,7 +114,6 @@ public class TutorialActivity extends AppCompatActivity
         which.add("查看祝福");
 
         TutorialAdapter adapter = new TutorialAdapter(videoPaths, which);
-        tut_SCROLL.setAdapter(adapter);
-        tut_SCROLL.scrollToPosition(adapter.getItemCount() - 1);
+        return adapter;
     }
 }

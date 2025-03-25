@@ -19,7 +19,7 @@ import android.graphics.RenderEffect;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
-public class CustomSetting extends DialogFragment
+public class Settings extends DialogFragment
 {
     private View rootView;
     public Spinner stageSpinner;
@@ -39,7 +39,7 @@ public class CustomSetting extends DialogFragment
         super.onViewCreated(view, savedInstanceState);
 
         String[] STAGES = {"(選階段)", "童年", "青年", "成年", "老年"};
-        String[] FESTIVALS = {"新年","父..[敬請期待]","母..[敬請期待]","生..[敬請期待]", "生病[敬請期待]"}; // "父親節","母親節","生日"};
+        String[] FESTIVALS = {"新年快樂","父親節快樂","母親節快樂","生日快樂", "身體健康"};
         stageSpinner = view.findViewById(R.id.stage_spinner);
         festivalSelector = view.findViewById(R.id.festival);
         juniorRankButton = view.findViewById(R.id.rank1);
@@ -211,7 +211,7 @@ public class CustomSetting extends DialogFragment
         // Remove blur effect when the dialog is dismissed
 
         mainActivity.settingButton.setBackground(ContextCompat.getDrawable(requireContext()
-                , stageSpinner.getSelectedItem().toString().equals("(選階段)") ? R.drawable.red_o10_out7 : R.drawable.oval));
+                , stageSpinner.getSelectedItem().toString().equals("(選階段)") ? R.drawable.red_o10_out7 : R.drawable.rect_round45));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && rootView != null)
             rootView.setRenderEffect(null);

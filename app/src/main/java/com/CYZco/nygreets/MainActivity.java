@@ -2,12 +2,14 @@ package com.CYZco.nygreets;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+
+import android.annotation.SuppressLint;
+import android.graphics.Paint;
 import android.view.animation.AnimationUtils;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import android.content.ClipboardManager;
 import android.view.animation.Animation;
-import android.annotation.SuppressLint;
 import androidx.fragment.app.Fragment;
 import android.widget.RelativeLayout;
 import android.view.WindowManager;
@@ -22,9 +24,9 @@ import android.content.Intent;
 import android.widget.Button;
 import android.view.Window;
 import java.util.ArrayList;
-import android.os.Bundle;
 import android.view.View;
 import java.util.Objects;
+import android.os.Bundle;
 import java.util.Arrays;
 import java.util.Random;
 import android.util.Log;
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity
     public String rankDefault = "peer";
     public String textMode = "mail";
     public String show_Greet;
-    private final CustomSetting CUSTOM_SETTING = new CustomSetting();
+    private final Settings CUSTOM_SETTING = new Settings();
     private final ArrayList<String> RECORDS = new ArrayList<>(2);
     private final Bless BLESS = new Bless();
 
@@ -120,7 +122,10 @@ public class MainActivity extends AppCompatActivity
         textField = findViewById(R.id.greets);
         copyButton = findViewById(R.id.copy);
         targetName = findViewById(R.id.name);
+        TextView bless = findViewById(R.id.bless);
 
+        bless.setLayerType(View.LAYER_TYPE_SOFTWARE, bless.getPaint());
+        bless.setShadowLayer(150f, 0f, 0f, getResources().getColor(R.color.yellow_a50));
         showTextScroller.setVerticalScrollBarEnabled(false);
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         generatePlace.startAnimation(slideUp);
@@ -257,7 +262,7 @@ public class MainActivity extends AppCompatActivity
         tutorialButton.setOnClickListener(v ->
         {
             Intent intent = new Intent(MainActivity.this, TutorialActivity.class);
-            startActivity(intent);
+            startActivity(intent);               
             overridePendingTransition(R.anim.zero_ani, R.anim.zero_ani);
         });
     }
@@ -306,14 +311,13 @@ public class MainActivity extends AppCompatActivity
         textField.setText(sentence);
     }
 
-    @SuppressLint("SetTextI18n")
     private void setRemindText()
     {
         nullSpin = !nullSpin;
         textField.setTextSize(33);
         textField.setText(R.string.tutorial);
-        int flash = !nullSpin ? R.drawable.red_o10_out7 : R.drawable.green_o10_out7;
-        int color = !nullSpin ? R.color.green : R.color.red;
+        int flash = !nullSpin ? R.drawable.red_o10_out7 : R.drawable.dark_red_o10_out7;
+        int color = !nullSpin ? R.color.dark_red : R.color.red;
         settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
         textField.setTextColor(getResources().getColor(color));
     }
@@ -342,7 +346,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         emojiButton.setVisibility(View.VISIBLE);
-        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.oval));
+        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rect_round45));
         textField.setTextColor(Color.BLACK);
         String ysEmoji = newGreet(blessArrays);
         String noEmoji = cutEmoji(ysEmoji);
@@ -365,7 +369,6 @@ public class MainActivity extends AppCompatActivity
         return s1 + "、" + s2;
     }
 
-    @SuppressLint("ResourceAsColor")
     public void byDefault(boolean bool)
     {
         int visibility = bool ? View.VISIBLE : View.INVISIBLE;
