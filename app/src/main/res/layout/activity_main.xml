@@ -288,55 +288,36 @@
             app:shapeAppearanceOverlay="@style/emoji_btn" />
     </RelativeLayout>
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="58dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/nul"
-        android:elevation="-1dp"
-        android:hint="@string/name_hint"
-        android:inputType="text"
-        android:paddingStart="26dp"
-        android:paddingLeft="26dp"
-        android:textColor="@color/black"
-        android:textColorHint="@color/gray_208"
-        android:textSize="23sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon_bar" />
-
     <com.bosphere.fadingedgelayout.FadingEdgeLayout
         android:id="@+id/fading_edge_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
         app:fel_edge="top|bottom"
         app:fel_size_bottom="20dp"
         app:fel_size_top="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/generate_place"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name">
+        app:layout_constraintTop_toBottomOf="@+id/icon_bar">
 
         <ScrollView
             android:id="@+id/showGreet_scroll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_centerInParent="true"
+            android:layout_gravity="center"
             android:background="@drawable/rect_round15">
 
             <TextView
-                android:id="@+id/greets"
+                android:id="@+id/textField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill"
                 android:maxWidth="300dp"
                 android:text="@string/tutorial"
                 android:textColor="@color/gray_150"
-                android:textSize="33sp"/>
+                android:textSize="33sp" />
         </ScrollView>
     </com.bosphere.fadingedgelayout.FadingEdgeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

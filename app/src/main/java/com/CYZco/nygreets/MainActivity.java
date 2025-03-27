@@ -1,15 +1,13 @@
 package com.CYZco.nygreets;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-
-import android.annotation.SuppressLint;
-import android.graphics.Paint;
 import android.view.animation.AnimationUtils;
+import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.ActionBar;
 import android.content.ClipboardManager;
 import android.view.animation.Animation;
+import android.annotation.SuppressLint;
 import androidx.fragment.app.Fragment;
 import android.widget.RelativeLayout;
 import android.view.WindowManager;
@@ -17,7 +15,6 @@ import android.widget.ScrollView;
 import android.content.ClipData;
 import android.util.TypedValue;
 import android.widget.TextView;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.graphics.Color;
 import android.content.Intent;
@@ -43,18 +40,17 @@ public class MainActivity extends AppCompatActivity
     public boolean emojiMode = false; //false = emoji disabled
     private boolean nullSpin = false;
     public TextView textField;
-    private EditText targetName;
     public String rankDefault = "peer";
     public String textMode = "mail";
     public String show_Greet;
-    private final Settings CUSTOM_SETTING = new Settings();
     private final ArrayList<String> RECORDS = new ArrayList<>(2);
-    private final Bless BLESS = new Bless();
+    private final Settings SETTING = new Settings();
+    private final BlessManager BLESS_MANAGER = new BlessManager();
 
-    String[] kidBlesses = BLESS.getGreetingsByStage("童年");
-    String[] teenBlesses = BLESS.getGreetingsByStage("青年");
-    String[] adultBlesses = BLESS.getGreetingsByStage("成年");
-    String[] elderBlesses = BLESS.getGreetingsByStage("老年");
+    String[] kidBlesses = BLESS_MANAGER.getGreetingsByStage("童年");
+    String[] teenBlesses = BLESS_MANAGER.getGreetingsByStage("青年");
+    String[] adultBlesses = BLESS_MANAGER.getGreetingsByStage("成年");
+    String[] elderBlesses = BLESS_MANAGER.getGreetingsByStage("老年");
     String[] blessArrays;
     ArrayList<String> saveBlesses = new ArrayList<>();
 
@@ -65,21 +61,23 @@ public class MainActivity extends AppCompatActivity
         RECORDS.add(s);
     }
 
-    private String newGreet(String[] array)
+    private String newGreet(String[] blessArrays)
     {
-        String[] copy = Arrays.copyOf(array, array.length);
-        String s1 = ranIndex(copy);
+        String[] blessingCopy = Arrays.copyOf(blessArrays, blessArrays.length);
+        ArrayList<String> copyArrayLists = new ArrayList<>(Arrays.asList(blessingCopy));
 
-        ArrayList<String> s2A = new ArrayList<>(Arrays.asList(copy));
-        s2A.remove(s1);
-        copy = s2A.toArray(new String[0]);
-        String s2 = ranIndex(copy);
+        String randomBless1 = randomIndex(blessingCopy);
+        copyArrayLists.remove(randomBless1);
 
-        return s1 + "、" + s2;
+        blessingCopy = copyArrayLists.toArray(new String[0]);
+        String randomBless2 = randomIndex(blessingCopy);
+
+        return randomBless1 + "、" + randomBless2;
     }
 
-    private String ranIndex(String[] array)
-    {return array[new Random().nextInt(array.length)];}
+    private String randomIndex(String[] array) {
+        return array[new Random().nextInt(array.length)];
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -97,12 +95,12 @@ public class MainActivity extends AppCompatActivity
             window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
             window.getDecorView().setSystemUiVisibility
-            (
-                View.SYSTEM_UI_FLAG_FULLSCREEN |
-                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-            );
+                    (
+                            View.SYSTEM_UI_FLAG_FULLSCREEN |
+                                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                    );
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -119,9 +117,8 @@ public class MainActivity extends AppCompatActivity
         convertButton = findViewById(R.id.convert_btn);
         showBlessing = findViewById(R.id.show_button);
         emojiButton = findViewById(R.id.emojiAdd);
-        textField = findViewById(R.id.greets);
+        textField = findViewById(R.id.textField);
         copyButton = findViewById(R.id.copy);
-        targetName = findViewById(R.id.name);
         TextView bless = findViewById(R.id.bless);
 
         bless.setLayerType(View.LAYER_TYPE_SOFTWARE, bless.getPaint());
@@ -133,38 +130,37 @@ public class MainActivity extends AppCompatActivity
         generateButton.setOnClickListener(v ->
         {
 
-            if (CUSTOM_SETTING.stageSpinner == null)
+            if (SETTING.stageSpinner == null)
             {
                 Log.d("MainActivity", "stageSpinner is null");
                 setRemindText();
                 return;
             }
 
-            if (CUSTOM_SETTING.stageSpinner.getSelectedItem() == null)
+            if (SETTING.stageSpinner.getSelectedItem() == null)
             {
                 Log.d("MainActivity", "stageSpinner.getSelectedItem() is null");
                 setRemindText();
                 return;
             }
 
-
-            setGreet(CUSTOM_SETTING.stageSpinner.getSelectedItem().toString());
+            setGreet(SETTING.stageSpinner.getSelectedItem().toString());
         });
 
         emojiButton.setOnClickListener(e->
         {
-            Spinner stageSpinner = CUSTOM_SETTING.stageSpinner;
+            Spinner stageSpinner = SETTING.stageSpinner;
             if (stageSpinner == null || stageSpinner.getSelectedItem() == null)
                 return;
 
             String getMes = textField.getText().toString();
-            if (!CUSTOM_SETTING.stageSpinner.getSelectedItem().toString().equals("(選階段)") && !saveBlesses.get(0).isEmpty())
+            if (!saveBlesses.get(0).isEmpty())
             {
                 if (getMes.contains(" "))
                 {
                     String replace = "\u3297\uFE0F";
                     String blessWithEmoji = saveBlesses.get(0);
-                    String blessWithoutEmoji = cutEmoji(blessWithEmoji);
+                    String blessWithoutEmoji = removeEmoji(blessWithEmoji);
                     String noEmojiMessage = getMes.substring(0, getMes.lastIndexOf(" ")).replace(replace,"祝");
                     String emojiReplacedMessage = noEmojiMessage.replace("祝", replace);
 
@@ -187,15 +183,12 @@ public class MainActivity extends AppCompatActivity
 
         showBlessing.setOnClickListener(v ->
         {
-            Spinner stageSpinner = CUSTOM_SETTING.stageSpinner;
+            Spinner stageSpinner = SETTING.stageSpinner;
             if (stageSpinner == null || stageSpinner.getSelectedItem() == null)
                 return;
 
             String stage = stageSpinner.getSelectedItem().toString();
-            if (stage.equals("(選階段)"))
-                setRemindText();
-
-            String[] blessArrays = BLESS.getGreetingsByStage(stage);
+            String[] blessArrays = BLESS_MANAGER.getGreetingsByStage(stage);
 
             StringBuilder greet = new StringBuilder();
             for (int i=0; i<blessArrays.length; i++)
@@ -226,7 +219,7 @@ public class MainActivity extends AppCompatActivity
             {
                 emojiButton.setVisibility(View.VISIBLE);
                 String ysEmoji = saveBlesses.get(0);
-                String noEmoji = cutEmoji(ysEmoji);
+                String noEmoji = removeEmoji(ysEmoji);
                 String mesDecide = emojiMode? ysEmoji : noEmoji;
                 String yn = emojiMode? "y" : "n" ;
 
@@ -256,23 +249,70 @@ public class MainActivity extends AppCompatActivity
             Fragment fragment = fragmentManager.findFragmentByTag("CustomSetting");
 
             if (fragment == null)
-                CUSTOM_SETTING.show(getSupportFragmentManager(), "CustomSetting");
+                SETTING.show(getSupportFragmentManager(), "CustomSetting");
         });
 
         tutorialButton.setOnClickListener(v ->
         {
             Intent intent = new Intent(MainActivity.this, TutorialActivity.class);
-            startActivity(intent);               
+            startActivity(intent);
             overridePendingTransition(R.anim.zero_ani, R.anim.zero_ani);
         });
+    }
+
+    private void setGreet(String selected)
+    {
+        switch (selected)
+        {
+            case "童年":
+                blessArrays = kidBlesses;
+                break;
+            case "青年":
+                blessArrays = teenBlesses;
+                break;
+            case "成年":
+                blessArrays = adultBlesses;
+                break;
+            case "老年":
+                blessArrays = elderBlesses;
+                break;
+            default:
+                return;
+        }
+
+        emojiButton.setVisibility(View.VISIBLE);
+        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rect_round45));
+        textField.setTextColor(Color.BLACK);
+        String ysEmoji = newGreet(blessArrays);
+        String noEmoji = removeEmoji(ysEmoji);
+        saveBlesses.set(0, ysEmoji);
+
+        String mesDecide = emojiMode ? ysEmoji : noEmoji;
+        String yn = emojiMode ? "y" : "n" ;
+
+        if (textMode.equals("mail"))
+            setBlessingMail(rankDefault, yn, mesDecide);
+        if (textMode.equals("line"))
+            setBlessingLineText(rankDefault, yn, mesDecide);
+    }
+
+    private void setRemindText()
+    {
+        nullSpin = !nullSpin;
+        textField.setTextSize(33);
+        textField.setText(R.string.tutorial);
+        int flash = !nullSpin ? R.drawable.red_o10_out7 : R.drawable.dark_red_o10_out7;
+        int color = !nullSpin ? R.color.dark_red : R.color.red;
+        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
+        textField.setTextColor(getResources().getColor(color));
     }
 
     public void setBlessingMail(String rankLevel, String emoji, String greet)
     {
         textMode = "mail";
-        CUSTOM_SETTING.rankLevelColourChange(rankLevel);
+        SETTING.rankLevelColourChange(rankLevel);
         String dear = "親愛的 ";
-        String name = targetName.getText().toString();
+        String name = SETTING.targetName.getText().toString();
         String wish = Objects.equals(emoji, "y") ? " \u3297\uFE0F" : " 祝";
         String happyNewYear = "新年快樂!";
         String formatAlign = "\n  "; // important for emoji
@@ -297,10 +337,10 @@ public class MainActivity extends AppCompatActivity
     public void setBlessingLineText(String rankLevel, String emoji, String greet)
     {
         textMode = "line";
-        CUSTOM_SETTING.rankLevelColourChange(rankLevel);
+        SETTING.rankLevelColourChange(rankLevel);
 
         String zhu = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
-        String names = targetName.getText().toString();
+        String names = SETTING.targetName.getText().toString();
 
         if (rankLevel.equals("junior"))
             names = surname(names);
@@ -311,74 +351,12 @@ public class MainActivity extends AppCompatActivity
         textField.setText(sentence);
     }
 
-    private void setRemindText()
+    public String removeEmoji(String twoGreets)
     {
-        nullSpin = !nullSpin;
-        textField.setTextSize(33);
-        textField.setText(R.string.tutorial);
-        int flash = !nullSpin ? R.drawable.red_o10_out7 : R.drawable.dark_red_o10_out7;
-        int color = !nullSpin ? R.color.dark_red : R.color.red;
-        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
-        textField.setTextColor(getResources().getColor(color));
-    }
-
-    private void setGreet(String selected)
-    {
-        switch (selected)
-        {
-            case "(選階段)":
-                setRemindText();
-                return;
-            case "童年":
-                blessArrays = kidBlesses;
-                break;
-            case "青年":
-                blessArrays = teenBlesses;
-                break;
-            case "成年":
-                blessArrays = adultBlesses;
-                break;
-            case "老年":
-                blessArrays = elderBlesses;
-                break;
-            default:
-                return;
-        }
-
-        emojiButton.setVisibility(View.VISIBLE);
-        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rect_round45));
-        textField.setTextColor(Color.BLACK);
-        String ysEmoji = newGreet(blessArrays);
-        String noEmoji = cutEmoji(ysEmoji);
-        saveBlesses.set(0, ysEmoji);
-
-        String mesDecide = emojiMode ? ysEmoji : noEmoji;
-        String yn = emojiMode ? "y" : "n" ;
-
-        if (textMode.equals("mail"))
-            setBlessingMail(rankDefault, yn, mesDecide);
-        if (textMode.equals("line"))
-            setBlessingLineText(rankDefault, yn, mesDecide);
-    }
-
-    public String cutEmoji(String text)
-    {
-        String[] s0 = text.split("、");
-        String s1 = s0[0].substring(0,s0[0].length()-2);
-        String s2 = s0[1].substring(0,s0[1].length()-2);
-        return s1 + "、" + s2;
-    }
-
-    public void byDefault(boolean bool)
-    {
-        int visibility = bool ? View.VISIBLE : View.INVISIBLE;
-        copyButton.setEnabled(bool);
-        convertButton.setEnabled(bool);
-        CUSTOM_SETTING.juniorRankButton.setEnabled(bool);
-        CUSTOM_SETTING.peerRankButton.setEnabled(bool);
-        CUSTOM_SETTING.seniorRankButton.setEnabled(bool);
-        showBlessing.setVisibility(visibility);
-        emojiButton.setVisibility(visibility);
+        String[] greets = twoGreets.split("、");
+        String greet1 = greets[0].substring(0,greets[0].length()-2);
+        String greet2 = greets[1].substring(0,greets[1].length()-2);
+        return greet1 + "、" + greet2;
     }
 
     private Boolean checkEnglish(String name)

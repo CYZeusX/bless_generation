@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
 import android.widget.Button;
-import android.graphics.Color;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -22,29 +22,31 @@ import androidx.fragment.app.DialogFragment;
 public class Settings extends DialogFragment
 {
     private View rootView;
+    public EditText targetName;
     public Spinner stageSpinner;
     public Spinner festivalSelector;
     public Button juniorRankButton;
     public Button peerRankButton;
     public Button seniorRankButton;
     private MainActivity mainActivity;
+    private String[] STAGES = {"童年", "青年", "成年", "老年"};
+    private String[] FESTIVALS = {"新年快樂", "父親節快樂", "母親節快樂", "生日快樂", "身體健康"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {return inflater.inflate(R.layout.custom_setting, container, false);}
+    {return inflater.inflate(R.layout.settings, container, false);}
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
         super.onViewCreated(view, savedInstanceState);
 
-        String[] STAGES = {"(選階段)", "童年", "青年", "成年", "老年"};
-        String[] FESTIVALS = {"新年快樂","父親節快樂","母親節快樂","生日快樂", "身體健康"};
         stageSpinner = view.findViewById(R.id.stage_spinner);
         festivalSelector = view.findViewById(R.id.festival);
         juniorRankButton = view.findViewById(R.id.rank1);
         peerRankButton = view.findViewById(R.id.rank2);
         seniorRankButton = view.findViewById(R.id.rank3);
+        targetName = view.findViewById(R.id.name);
 
         rankButtonSetting(juniorRankButton, "junior");
         rankButtonSetting(peerRankButton, "peer");
@@ -54,36 +56,10 @@ public class Settings extends DialogFragment
         ArrayAdapter<String> festivalAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, FESTIVALS);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        stageSpinner.setAdapter(adapter);
-        stageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (!isAdded()) return;
-
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                setSpinner(selectedItem);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
-        });
-
         festivalAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        festivalSelector.setAdapter(festivalAdapter);
-        festivalSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-            {
-                if (!isAdded()) return;
 
-                String selectedItem = parent.getItemAtPosition(position).toString();
-                setSpinner(selectedItem);
-            }
-            @Override public void onNothingSelected(AdapterView<?> parent) {}
-        });
+        stageSpinner.setAdapter(adapter);
+        festivalSelector.setAdapter(festivalAdapter);
 
         rankLevelColourChange(mainActivity.rankDefault);
     }
@@ -104,36 +80,6 @@ public class Settings extends DialogFragment
         }
     }
 
-    private void setSpinner(String selected)
-    {
-        if (isAdded() || getActivity() != null) return;
-
-        boolean isDefault = selected.equals("(選階段)");
-        MainActivity mainActivity = (MainActivity) getActivity();
-
-        if (mainActivity != null)
-        {
-            Button emojiButton = mainActivity.emojiButton;
-            TextView textField = mainActivity.textField;
-            int spinnerDrawable = R.drawable.rect_round30_stroke1;
-
-            if (isDefault)
-            {
-                textField.setTextSize(30);
-                textField.setTextColor(Color.GRAY);
-                textField.setText(R.string.tutorial);
-            }
-
-            if (stageSpinner != null)
-                stageSpinner.setBackground(ContextCompat.getDrawable(mainActivity, spinnerDrawable));
-
-            mainActivity.byDefault(!isDefault);
-
-            if (textField.getText().toString().equals(mainActivity.show_Greet))
-                emojiButton.setVisibility(View.INVISIBLE);
-        }
-    }
-
     public void rankButton()
     {
         MainActivity mainActivity = (MainActivity) getActivity();
@@ -143,7 +89,7 @@ public class Settings extends DialogFragment
 
             if (!mainActivity.saveBlesses.get(0).isEmpty())
             {
-                String greet = mainActivity.emojiMode ? mainActivity.saveBlesses.get(0) : mainActivity.cutEmoji(mainActivity.saveBlesses.get(0));
+                String greet = mainActivity.emojiMode ? mainActivity.saveBlesses.get(0) : mainActivity.removeEmoji(mainActivity.saveBlesses.get(0));
                 String yn = mainActivity.emojiMode ? "y" : "n";
 
                 if (mainActivity.textMode.equals("mail"))
@@ -161,7 +107,6 @@ public class Settings extends DialogFragment
         if (mainActivity != null)
         {
             Button[] rankButtons = new Button[] {juniorRankButton, peerRankButton, seniorRankButton};
-            mainActivity.emojiButton.setVisibility(View.VISIBLE);
 
             // Map rankLevel to index
             int selectedIndex = switch (rankLevel)
@@ -209,9 +154,6 @@ public class Settings extends DialogFragment
     {
         super.onStop();
         // Remove blur effect when the dialog is dismissed
-
-        mainActivity.settingButton.setBackground(ContextCompat.getDrawable(requireContext()
-                , stageSpinner.getSelectedItem().toString().equals("(選階段)") ? R.drawable.red_o10_out7 : R.drawable.rect_round45));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && rootView != null)
             rootView.setRenderEffect(null);

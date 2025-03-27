@@ -1,7 +1,11 @@
 package com.CYZco.nygreets;
 
-public class Bless
-{
+/***
+ * this class is intent to be the database for the app,
+ * and stores the text blessings.
+ */
+public class Bless {
+
     //Blessings for Chinese New Year
     public String childNewYearBless =
         "心想事成\uD83D\uDCAB 大吉大利\uD83C\uDF4A 身體健康\uD83D\uDCAA 學業進步\uD83C\uDF93 步步高升\uD83D\uDCC8 萬事如意\uD83C\uDF40 家庭幸福\uD83C\uDFE0 天天向上\uD83D\uDCC8 夢想成真\uD83C\uDF20 福星高照\uD83C\uDF1F 鵬程萬里\uD83E\uDD85 鶴立雞群\uD83D\uDC51 " +
@@ -27,30 +31,31 @@ public class Bless
         "松鶴延年\uD83E\uDDA9 鴻運當頭\uD83C\uDF40 歡樂年年\uD83C\uDF8A 金玉滿堂\uD83C\uDFE6 喜迎新歲\uD83C\uDF38 吉祥安康\uD83C\uDF08 和樂融融\uD83D\uDE07 延年益壽\u200b\u23EB 年年健康\uD83E\uDD29 大吉大利\uD83C\uDF4A 財源廣進\uD83D\uDCB5 心境常寧\u200b\u263A " +
         "闔家平安\u262E\uFE0F 家庭幸福\uD83C\uDFE0 五福臨門\uD83C\uDF40 四季平安\uD83D\uDE0C 豐衣足食\uD83C\uDF5A 福壽綿延\u200b\u23F3 和睦安康\uD83E\uDD1D 美滿生活\u200b\u2728 福壽雙全\uD83D\uDE46 平安長樂\uD83D\uDE4F 富貴有餘\uD83D\uDCC8 福如東海\uD83C\uDF0A";
 
-    public String childBless, teenBless, adultBless, elderBless = "";
 
-    private String[] extractBlesses(String bless)
-    {
-        return bless.split(" ");
-    }
+    //Blessings for Fathers Day
+    public String childFathersDayBless = "";
+    public String teenFathersDayBless = "";
+    public String adultFathersDayBless = "";
+    public String elderFathersDayBless = "";
 
-    public void switchBlessing(String replaceChildBless, String replaceTeenBless, String replaceAdultBless, String replaceElderBless)
-    {
-        childBless = replaceChildBless;
-        teenBless = replaceTeenBless;
-        adultBless = replaceAdultBless;
-        elderBless = replaceElderBless;
-    }
 
-    public String[] getGreetingsByStage(String stage)
-    {
-        return switch (stage)
-        {
-            case "童年" -> extractBlesses(childNewYearBless);
-            case "青年" -> extractBlesses(teenNewYearBless);
-            case "成年" -> extractBlesses(adultNewYearBless);
-            case "老年" -> extractBlesses(elderNewYearBless);
-            default -> new String[]{};
-        };
-    }
+    //Blessings for Mothers Day
+    public String childMothersDayBless = "";
+    public String teenMothersDayBless = "";
+    public String adultMothersDayBless = "";
+    public String elderMothersDayBless = "";
+
+
+    //Blessings for Birthday
+    public String childBirthdayBless = "";
+    public String teenBirthdayBless = "";
+    public String adultBirthdayBless = "";
+    public String elderBirthdayBless = "";
+
+
+    //Blessings for Healthy (身體健康)
+    public String childHealthyBless = "";
+    public String teenHealthyBless = "";
+    public String adultHealthyBless = "";
+    public String elderHealthyBless = "";
 }

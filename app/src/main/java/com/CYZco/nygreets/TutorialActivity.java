@@ -1,32 +1,30 @@
 package com.CYZco.nygreets;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.animation.AnimationUtils;
 import androidx.appcompat.app.ActionBar;
+import android.view.animation.Animation;
 import android.annotation.SuppressLint;
+import android.widget.RelativeLayout;
+import androidx.annotation.NonNull;
 import android.view.WindowManager;
 import android.content.Intent;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import java.util.ArrayList;
 import android.view.Window;
+import android.os.Handler;
 import android.view.View;
 import android.os.Bundle;
 import android.os.Build;
-import android.widget.RelativeLayout;
-import android.os.Handler;
-
 import java.util.List;
 
 public class TutorialActivity extends AppCompatActivity
 {
-    private Button home, tutorial;
+    private Button home;
     private RecyclerView tut_SCROLL;
-    private RelativeLayout generate_place;
-    private Animation slideDown, slideGone, slideUpGone;
+    private Animation slideUpGone;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -54,13 +52,13 @@ public class TutorialActivity extends AppCompatActivity
         if (actionBar != null)
         {actionBar.hide();}
 
-        tut_SCROLL = findViewById(R.id.tutorial_scroll);
+        RelativeLayout generate_place = findViewById(R.id.generate_place);
+        Button tutorial = findViewById(R.id.tut_button);
         home = findViewById(R.id.home_button);
-        tutorial = findViewById(R.id.tut_button);
-        generate_place = findViewById(R.id.generate_place);
+        tut_SCROLL = findViewById(R.id.tutorial_scroll);
 
-        slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
-        slideGone = AnimationUtils.loadAnimation(this, R.anim.slide_gone);
+        Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        Animation slideGone = AnimationUtils.loadAnimation(this, R.anim.slide_gone);
         slideUpGone = AnimationUtils.loadAnimation(this, R.anim.slide_up_gone);
 
         tut_SCROLL.startAnimation(slideDown);

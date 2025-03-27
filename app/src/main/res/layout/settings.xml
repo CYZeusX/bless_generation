@@ -5,10 +5,30 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+
+    <EditText
+        android:id="@+id/name"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@color/nul"
+        android:elevation="-1dp"
+        android:hint="@string/name_hint"
+        android:inputType="text"
+        android:paddingStart="26dp"
+        android:paddingLeft="26dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/gray_208"
+        android:textSize="23sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+
     <LinearLayout
         android:id="@+id/ranks"
         android:layout_width="350dp"
         android:layout_height="60dp"
+        android:layout_below="@+id/name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
