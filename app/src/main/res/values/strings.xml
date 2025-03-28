@@ -12,4 +12,6 @@
     <string name="emoji">😄</string>
     <string name="tutorial">送上祝福前\n請選擇階段</string>
     <string name="blessTutorial">教學</string>
+    <string name="dear">親愛的</string>
+    <string name="wish">祝</string>
 </resources>
