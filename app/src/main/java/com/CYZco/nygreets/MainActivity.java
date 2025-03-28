@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity
     public Button convertButton;
     public Button settingButton;
     public boolean emojiMode = false; //false = emoji disabled
-    private boolean nullSpin = false;
     public TextView textField;
     public String rankDefault = "peer";
     public String textMode = "mail";
@@ -95,12 +94,12 @@ public class MainActivity extends AppCompatActivity
             window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
             window.getDecorView().setSystemUiVisibility
-                    (
-                            View.SYSTEM_UI_FLAG_FULLSCREEN |
-                                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                    );
+                (
+                    View.SYSTEM_UI_FLAG_FULLSCREEN |
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                );
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -129,39 +128,29 @@ public class MainActivity extends AppCompatActivity
 
         generateButton.setOnClickListener(v ->
         {
+            Spinner stageSpinner = SETTING.stageSpinner;
 
-            if (SETTING.stageSpinner == null)
+            if (stageSpinner == null)
             {
                 Log.d("MainActivity", "stageSpinner is null");
-                setRemindText();
+                setGreet("成年");
                 return;
             }
 
-            if (SETTING.stageSpinner.getSelectedItem() == null)
-            {
-                Log.d("MainActivity", "stageSpinner.getSelectedItem() is null");
-                setRemindText();
-                return;
-            }
-
-            setGreet(SETTING.stageSpinner.getSelectedItem().toString());
+            setGreet(stageSpinner.getSelectedItem().toString());
         });
 
         emojiButton.setOnClickListener(e->
         {
-            Spinner stageSpinner = SETTING.stageSpinner;
-            if (stageSpinner == null || stageSpinner.getSelectedItem() == null)
-                return;
-
-            String getMes = textField.getText().toString();
+            String getMessage = textField.getText().toString();
             if (!saveBlesses.get(0).isEmpty())
             {
-                if (getMes.contains(" "))
+                if (getMessage.contains(" "))
                 {
                     String replace = "\u3297\uFE0F";
                     String blessWithEmoji = saveBlesses.get(0);
                     String blessWithoutEmoji = removeEmoji(blessWithEmoji);
-                    String noEmojiMessage = getMes.substring(0, getMes.lastIndexOf(" ")).replace(replace,"祝");
+                    String noEmojiMessage = getMessage.substring(0, getMessage.lastIndexOf(" ")).replace(replace,"祝");
                     String emojiReplacedMessage = noEmojiMessage.replace("祝", replace);
 
                     String text = !emojiMode ? blessWithEmoji : blessWithoutEmoji;
@@ -184,12 +173,13 @@ public class MainActivity extends AppCompatActivity
         showBlessing.setOnClickListener(v ->
         {
             Spinner stageSpinner = SETTING.stageSpinner;
+            String stage;
+
             if (stageSpinner == null || stageSpinner.getSelectedItem() == null)
-                return;
+                stage = "成年";
+            else stage = stageSpinner.getSelectedItem().toString();
 
-            String stage = stageSpinner.getSelectedItem().toString();
             String[] blessArrays = BLESS_MANAGER.getGreetingsByStage(stage);
-
             StringBuilder greet = new StringBuilder();
             for (int i=0; i<blessArrays.length; i++)
             {
@@ -218,15 +208,7 @@ public class MainActivity extends AppCompatActivity
             if (!saveBlesses.get(0).isEmpty())
             {
                 emojiButton.setVisibility(View.VISIBLE);
-                String ysEmoji = saveBlesses.get(0);
-                String noEmoji = removeEmoji(ysEmoji);
-                String mesDecide = emojiMode? ysEmoji : noEmoji;
-                String yn = emojiMode? "y" : "n" ;
-
-                if (textMode.equals("mail"))
-                    setBlessingLineText(rankDefault, yn, mesDecide);
-                else if (textMode.equals("line"))
-                    setBlessingMail(rankDefault, yn, mesDecide);
+                buildBless("line");
             }
         });
 
@@ -281,38 +263,39 @@ public class MainActivity extends AppCompatActivity
         }
 
         emojiButton.setVisibility(View.VISIBLE);
-        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rect_round45));
         textField.setTextColor(Color.BLACK);
-        String ysEmoji = newGreet(blessArrays);
-        String noEmoji = removeEmoji(ysEmoji);
-        saveBlesses.set(0, ysEmoji);
+        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rect_round45));
 
-        String mesDecide = emojiMode ? ysEmoji : noEmoji;
-        String yn = emojiMode ? "y" : "n" ;
-
-        if (textMode.equals("mail"))
-            setBlessingMail(rankDefault, yn, mesDecide);
-        if (textMode.equals("line"))
-            setBlessingLineText(rankDefault, yn, mesDecide);
+        String onEmoji = newGreet(blessArrays);
+        saveBlesses.set(0, onEmoji);
+        devBuildBless(onEmoji, "mail");
     }
 
-    private void setRemindText()
+    public void buildBless(String textModeDecision)
     {
-        nullSpin = !nullSpin;
-        textField.setTextSize(33);
-        textField.setText(R.string.tutorial);
-        int flash = !nullSpin ? R.drawable.red_o10_out7 : R.drawable.dark_red_o10_out7;
-        int color = !nullSpin ? R.color.dark_red : R.color.red;
-        settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, flash));
-        textField.setTextColor(getResources().getColor(color));
+        String onEmoji = saveBlesses.get(0);
+        devBuildBless(onEmoji, textModeDecision);
     }
 
-    public void setBlessingMail(String rankLevel, String emoji, String greet)
+    private void devBuildBless(String onEmoji, String textModeDecision)
+    {
+        String offEmoji = removeEmoji(onEmoji);
+        String messageDecision = emojiMode? onEmoji : offEmoji;
+        String emojiDecision = emojiMode ? "y" : "n" ;
+        textModeDecision = textModeDecision.equals("mail") ? "mail" : "line";
+
+        if (textMode.equals(textModeDecision))
+            setBlessingMail(rankDefault, emojiDecision, messageDecision);
+        else setBlessingLineText(rankDefault, emojiDecision, messageDecision);
+    }
+
+    public void setBlessingMail(String rankLevel, String emoji,String greet)
     {
         textMode = "mail";
         SETTING.rankLevelColourChange(rankLevel);
+
         String dear = "親愛的 ";
-        String name = SETTING.targetName.getText().toString();
+        String name = SETTING.targetName != null ? SETTING.targetName.getText().toString() : "某某某";
         String wish = Objects.equals(emoji, "y") ? " \u3297\uFE0F" : " 祝";
         String happyNewYear = "新年快樂!";
         String formatAlign = "\n  "; // important for emoji
@@ -339,13 +322,13 @@ public class MainActivity extends AppCompatActivity
         textMode = "line";
         SETTING.rankLevelColourChange(rankLevel);
 
-        String zhu = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
-        String names = SETTING.targetName.getText().toString();
+        String wish = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
+        String name = SETTING.targetName != null ? SETTING.targetName.getText().toString() : "某某某";
 
         if (rankLevel.equals("junior"))
-            names = surname(names);
+            name = surname(name);
 
-        String sentence = zhu + names + "新年快樂!  " + greet;
+        String sentence = wish + name + "新年快樂!  " + greet;
         addRecord(sentence);
         textField.setTextSize(24f);
         textField.setText(sentence);

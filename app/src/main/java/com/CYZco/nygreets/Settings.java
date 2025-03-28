@@ -8,9 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.graphics.Shader;
-import android.widget.AdapterView;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
@@ -29,12 +27,12 @@ public class Settings extends DialogFragment
     public Button peerRankButton;
     public Button seniorRankButton;
     private MainActivity mainActivity;
-    private String[] STAGES = {"童年", "青年", "成年", "老年"};
-    private String[] FESTIVALS = {"新年快樂", "父親節快樂", "母親節快樂", "生日快樂", "身體健康"};
+    private final BlessManager BLESS_MANAGER = new BlessManager();
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-    {return inflater.inflate(R.layout.settings, container, false);}
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.settings, container, false);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -52,8 +50,8 @@ public class Settings extends DialogFragment
         rankButtonSetting(peerRankButton, "peer");
         rankButtonSetting(seniorRankButton, "senior");
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, STAGES);
-        ArrayAdapter<String> festivalAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, FESTIVALS);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.STAGES);
+        ArrayAdapter<String> festivalAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.FESTIVALS);
 
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         festivalAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
@@ -89,13 +87,7 @@ public class Settings extends DialogFragment
 
             if (!mainActivity.saveBlesses.get(0).isEmpty())
             {
-                String greet = mainActivity.emojiMode ? mainActivity.saveBlesses.get(0) : mainActivity.removeEmoji(mainActivity.saveBlesses.get(0));
-                String yn = mainActivity.emojiMode ? "y" : "n";
-
-                if (mainActivity.textMode.equals("mail"))
-                    mainActivity.setBlessingMail(mainActivity.rankDefault, yn, greet);
-                if (mainActivity.textMode.equals("line"))
-                    mainActivity.setBlessingLineText(mainActivity.rankDefault, yn, greet);
+                mainActivity.buildBless("mail");
                 mainActivity.addRecord(mainActivity.textField.getText().toString());
             }
         }
