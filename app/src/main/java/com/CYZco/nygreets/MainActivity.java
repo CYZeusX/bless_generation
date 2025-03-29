@@ -39,9 +39,11 @@ public class MainActivity extends AppCompatActivity
     public Button settingButton;
     public boolean emojiMode = false; //false = emoji disabled
     public TextView textField;
-    public String rankDefault = "peer";
+    public String rankDefault = "without dear";
     public String textMode = "mail";
     public String show_Greet;
+    public String you = "你";
+    public String event = "";
     private final ArrayList<String> RECORDS = new ArrayList<>(2);
     private final Settings SETTING = new Settings();
     private final BlessManager BLESS_MANAGER = new BlessManager();
@@ -122,6 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         bless.setLayerType(View.LAYER_TYPE_SOFTWARE, bless.getPaint());
         bless.setShadowLayer(150f, 0f, 0f, getResources().getColor(R.color.yellow_a50));
+        settingButton.setEnabled(false);
         showTextScroller.setVerticalScrollBarEnabled(false);
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         generatePlace.startAnimation(slideUp);
@@ -147,11 +150,11 @@ public class MainActivity extends AppCompatActivity
             {
                 if (getMessage.contains(" "))
                 {
-                    String replace = "\u3297\uFE0F";
+                    String wishEmoji = "\u3297\uFE0F";
                     String blessWithEmoji = saveBlesses.get(0);
                     String blessWithoutEmoji = removeEmoji(blessWithEmoji);
-                    String noEmojiMessage = getMessage.substring(0, getMessage.lastIndexOf(" ")).replace(replace,"祝");
-                    String emojiReplacedMessage = noEmojiMessage.replace("祝", replace);
+                    String noEmojiMessage = getMessage.substring(0, getMessage.lastIndexOf(" ")).replace(wishEmoji,"祝");
+                    String emojiReplacedMessage = noEmojiMessage.replace("祝", wishEmoji);
 
                     String text = !emojiMode ? blessWithEmoji : blessWithoutEmoji;
                     String message = !emojiMode ? emojiReplacedMessage : noEmojiMessage;
@@ -264,6 +267,7 @@ public class MainActivity extends AppCompatActivity
 
         emojiButton.setVisibility(View.VISIBLE);
         textField.setTextColor(Color.BLACK);
+        settingButton.setEnabled(true);
         settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rect_round45));
 
         String onEmoji = newGreet(blessArrays);
@@ -286,49 +290,64 @@ public class MainActivity extends AppCompatActivity
 
         if (textMode.equals(textModeDecision))
             setBlessingMail(rankDefault, emojiDecision, messageDecision);
-        else setBlessingLineText(rankDefault, emojiDecision, messageDecision);
+        else setBlessingLineText(emojiDecision, messageDecision);
     }
 
-    public void setBlessingMail(String rankLevel, String emoji,String greet)
+    public void setBlessingMail(String rankDefault, String emoji,String greet)
     {
+        // set the text mode
         textMode = "mail";
-        SETTING.rankLevelColourChange(rankLevel);
 
+        // algorithms to set the elements in the blessing sentence
         String dear = "親愛的 ";
-        String name = SETTING.targetName != null ? SETTING.targetName.getText().toString() : "某某某";
-        String wish = Objects.equals(emoji, "y") ? " \u3297\uFE0F" : " 祝";
-        String happyNewYear = "新年快樂!";
-        String formatAlign = "\n  "; // important for emoji
+        String name = SETTING.targetName == null ? "某某某" : SETTING.targetName.getText().toString();
+        String wish = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
+        you = SETTING.youSelector == null ? "你" : SETTING.youSelector.getSelectedItem().toString();
+        event = SETTING.eventSelector == null ? "新年快樂" : SETTING.eventSelector.getSelectedItem().toString();
+        String formatAlign = "\n "; // important for emoji
 
+        // algorithms to set the name
         if (!name.isEmpty())
-            name += !rankDefault.equals("senior") ? ":\n" : "";
+            name += !this.rankDefault.equals("with dear") ? ":\n" : "";
 
-        if (rankLevel.equals("junior"))
-            name = surname(name);
+        // build the blessing sentence, for having "親愛的"
+        String dearOn =
+                dear + name + ":" + formatAlign +
+                wish + you + event + "!" + formatAlign + greet;
 
-        String dearY = dear + name + ":\n " + wish + "您" + happyNewYear + formatAlign + greet;
-        String dearN = name + wish + "你" + happyNewYear + formatAlign + greet;
+        // build the blessing sentence, for without "親愛的"
+        String dearOff =
+                name + " " +
+                wish + you + event + "!" + formatAlign + greet;
 
-        String sentence;
-        sentence = rankLevel.equals("senior") ? dearY : dearN;
+        // algorithms to decide the sentence
+        String sentence = rankDefault.equals("with dear") ? dearOn : dearOff;
 
+        // add record, fine tune the text style
         addRecord(sentence);
         textField.setTextSize(24f);
         textField.setText(sentence);
     }
 
-    public void setBlessingLineText(String rankLevel, String emoji, String greet)
+    public void setBlessingLineText(String emoji, String greet)
     {
         textMode = "line";
-        SETTING.rankLevelColourChange(rankLevel);
 
+        // algorithms to set the word for wish
         String wish = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
+
+        // algorithms to set the name
         String name = SETTING.targetName != null ? SETTING.targetName.getText().toString() : "某某某";
+        you = SETTING.youSelector == null ? "你" : SETTING.youSelector.getSelectedItem().toString();
+        if (name.isEmpty()) name = you;
 
-        if (rankLevel.equals("junior"))
-            name = surname(name);
+        // algorithms to set the event
+        event = SETTING.eventSelector == null ? "新年快樂" : SETTING.eventSelector.getSelectedItem().toString();
 
-        String sentence = wish + name + "新年快樂!  " + greet;
+        // build the blessing sentence
+        String sentence = wish + name + event + "! " + greet;
+
+        // add record, fine tune the text style
         addRecord(sentence);
         textField.setTextSize(24f);
         textField.setText(sentence);
@@ -340,40 +359,5 @@ public class MainActivity extends AppCompatActivity
         String greet1 = greets[0].substring(0,greets[0].length()-2);
         String greet2 = greets[1].substring(0,greets[1].length()-2);
         return greet1 + "、" + greet2;
-    }
-
-    private Boolean checkEnglish(String name)
-    {
-        String abc = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        for (char c : name.toCharArray())
-        {
-            for (char charABC : abc.toCharArray())
-            {
-                if (c == charABC)
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    private String surname(String name)
-    {
-        if (!checkEnglish(name))
-        {
-            switch (name.length())
-            {
-                case 0:
-                case 3:
-                case 4:
-                    break;
-                case 5:
-                    name = name.substring(1);
-                    break;
-                default:
-                    name = name.substring(2);
-                    break;
-            }
-        }
-        return name;
     }
 }

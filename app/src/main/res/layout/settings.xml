@@ -12,7 +12,7 @@
         android:layout_centerHorizontal="true">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/dear"
             android:layout_width="120dp"
             android:layout_height="60dp"
             android:gravity="center"
@@ -27,14 +27,13 @@
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/button"
-            android:layout_toRightOf="@+id/button"
+            android:layout_toEndOf="@+id/dear"
+            android:layout_toRightOf="@+id/dear"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
             android:background="@color/nul"
-            android:elevation="-1dp"
             android:hint="@string/name_hint"
             android:inputType="text"
-            android:paddingStart="26dp"
-            android:paddingLeft="26dp"
             android:textColor="@color/white"
             android:textColorHint="@color/gray_150"
             android:textSize="25sp"
@@ -42,109 +41,74 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
+            android:id="@+id/colon"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:layout_alignEnd="@+id/festival"
+            android:layout_alignRight="@+id/festival"
+            android:layout_toEndOf="@+id/name"
+            android:layout_toRightOf="@+id/name"
+            android:gravity="center"
+            android:text=":"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:shapeAppearanceOverlay="@style/cornerLeft_30" />
+
+        <TextView
             android:id="@+id/wish"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_below="@+id/name"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="@string/wish"
             android:textSize="25sp"
             android:textColor="@color/white"
             app:shapeAppearanceOverlay="@style/cornerLeft_30" />
 
-        <TextView
+        <Spinner
             android:id="@+id/you"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_below="@+id/name"
             android:layout_alignTop="@+id/wish"
+            android:layout_alignEnd="@+id/dear"
+            android:layout_alignRight="@+id/dear"
             android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
             android:layout_toEndOf="@+id/wish"
             android:layout_toRightOf="@+id/wish"
-            android:gravity="center"
-            android:text="你"
-            android:textSize="25sp"
-            android:textColor="@color/white"
             android:background="@drawable/rect_round30_stroke1"
-            app:shapeAppearanceOverlay="@style/cornerLeft_30"/>
+            android:gravity="center"
+            android:popupBackground="@drawable/rect_round30_stroke1"
+            android:spinnerMode="dropdown"
+            android:text="你"
+            android:textColor="@color/white"
+            android:textSize="25sp"
+            app:shapeAppearanceOverlay="@style/cornerLeft_30" />
 
         <Spinner
             android:id="@+id/festival"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="60dp"
-            android:layout_alignTop="@+id/wish"
+            android:layout_alignStart="@+id/name"
+            android:layout_alignLeft="@+id/name"
+            android:layout_alignTop="@+id/you"
             android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_toEndOf="@+id/you"
-            android:layout_toRightOf="@+id/you"
-            android:layout_weight="1"
             android:background="@drawable/rect_round30_stroke1"
             android:popupBackground="@drawable/rect_round30_stroke1"
             android:spinnerMode="dropdown" />
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/ranks"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
-        android:layout_below="@+id/blessFormat"
-        android:layout_marginTop="60dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/rank1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/gray_30"
-            android:gravity="center"
-            android:text="@string/junior"
-            android:textColor="@color/gray_64"
-            android:textSize="20sp"
-            app:shapeAppearanceOverlay="@style/cornerLeft_30" />
-
-        <Button
-            android:id="@+id/rank2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/gray_30"
-            android:gravity="center"
-            android:text="@string/medior"
-            android:textColor="@color/gray_64"
-            android:textSize="20sp"
-            app:cornerRadius="0dp" />
-
-        <Button
-            android:id="@+id/rank3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:backgroundTint="@color/gray_30"
-            android:gravity="center"
-            android:text="@string/senior"
-            android:textColor="@color/gray_64"
-            android:textSize="20sp"
-            app:shapeAppearanceOverlay="@style/cornerRight_30" />
-    </LinearLayout>
-
     <Spinner
         android:id="@+id/stage_spinner"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:layout_below="@+id/ranks"
-        android:layout_alignEnd="@+id/ranks"
-        android:layout_alignRight="@+id/ranks"
+        android:layout_below="@+id/blessFormat"
+        android:layout_alignEnd="@+id/blessFormat"
+        android:layout_alignRight="@+id/blessFormat"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:layout_weight="1"
+        android:layout_marginTop="40dp"
         android:background="@drawable/rect_round30_stroke1"
         android:popupBackground="@drawable/rect_round30_stroke1"
         android:spinnerMode="dropdown" />

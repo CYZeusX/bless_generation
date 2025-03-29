@@ -67,6 +67,7 @@ public class TutorialActivity extends AppCompatActivity
         home.setOnClickListener(v ->
         {
             tut_SCROLL.startAnimation(slideUpGone);
+
             int animationDuration = 300;
             new Handler().postDelayed(() ->
             {

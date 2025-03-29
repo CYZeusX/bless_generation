@@ -4,6 +4,7 @@ import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.os.Bundle;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.graphics.RenderEffect;
+
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -22,10 +24,10 @@ public class Settings extends DialogFragment
     private View rootView;
     public EditText targetName;
     public Spinner stageSpinner;
-    public Spinner festivalSelector;
-    public Button juniorRankButton;
-    public Button peerRankButton;
-    public Button seniorRankButton;
+    public Spinner eventSelector;
+    public Spinner youSelector;
+    public Button dear;
+    private boolean textMode = true; //true-senior, false-without dear
     private MainActivity mainActivity;
     private final BlessManager BLESS_MANAGER = new BlessManager();
 
@@ -39,30 +41,73 @@ public class Settings extends DialogFragment
     {
         super.onViewCreated(view, savedInstanceState);
 
+        // Initialize views
         stageSpinner = view.findViewById(R.id.stage_spinner);
-        festivalSelector = view.findViewById(R.id.festival);
-        juniorRankButton = view.findViewById(R.id.rank1);
-        peerRankButton = view.findViewById(R.id.rank2);
-        seniorRankButton = view.findViewById(R.id.rank3);
+        eventSelector = view.findViewById(R.id.festival);
+        youSelector = view.findViewById(R.id.you);
+        dear = view.findViewById(R.id.dear);
         targetName = view.findViewById(R.id.name);
 
-        rankButtonSetting(juniorRankButton, "junior");
-        rankButtonSetting(peerRankButton, "peer");
-        rankButtonSetting(seniorRankButton, "senior");
-
+        // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.STAGES);
         ArrayAdapter<String> festivalAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.FESTIVALS);
+        ArrayAdapter<String> youAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.YOU);
 
+        // Set layout for the dropdown
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         festivalAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        youAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
 
+        // Apply the adapter to the spinner
         stageSpinner.setAdapter(adapter);
-        festivalSelector.setAdapter(festivalAdapter);
+        eventSelector.setAdapter(festivalAdapter);
+        youSelector.setAdapter(youAdapter);
 
-        rankLevelColourChange(mainActivity.rankDefault);
+        // real time update decided option to blessing text
+        dearButton(dear);
+        realTimeUpdate(stageSpinner);
+        realTimeUpdate(eventSelector);
+        realTimeUpdate(youSelector);
+
+        dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.gray_200 : R.color.gray_64));
     }
 
-    private void rankButtonSetting(Button button, String rank)
+    private void realTimeUpdate(Spinner spinner)
+    {
+        if (isAdded() && getActivity() != null)
+        {
+            mainActivity = (MainActivity) requireActivity();
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+            {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+                {
+                    if (isAdded() && getActivity() != null)
+                        blessTextUpdate();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {}
+            });
+        }
+    }
+
+    private void blessTextUpdate()
+    {
+        // should be use the method within isAdded() && getActivity() != null
+
+        // Initialize views
+        mainActivity.buildBless("mail");
+
+        // assign updated values to the mainActivity
+        mainActivity.you = youSelector.getSelectedItem().toString();
+        mainActivity.event = eventSelector.getSelectedItem().toString();
+
+        // Update the text field
+        mainActivity.addRecord(mainActivity.textField.getText().toString());
+    }
+
+    private void dearButton(Button button)
     {
         if (isAdded() && getActivity() != null)
         {
@@ -71,51 +116,24 @@ public class Settings extends DialogFragment
             {
                 if (isAdded() && getActivity() != null)
                 {
-                    mainActivity.rankDefault = rank;
-                    rankButton();
+                    mainActivity.rankDefault = textMode ? "with dear" : "without dear";
+                    textMode = !textMode;
+                    dearButtonSetting();
                 }
             });
         }
     }
 
-    public void rankButton()
+    public void dearButtonSetting()
     {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null)
+        // real-time update text colours
+        dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.gray_200 : R.color.gray_64));
+
+        // update blessing text
+        if (!mainActivity.saveBlesses.get(0).isEmpty())
         {
-            rankLevelColourChange(mainActivity.rankDefault);
-
-            if (!mainActivity.saveBlesses.get(0).isEmpty())
-            {
-                mainActivity.buildBless("mail");
-                mainActivity.addRecord(mainActivity.textField.getText().toString());
-            }
-        }
-    }
-
-    public void rankLevelColourChange(String rankLevel)
-    {
-        MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null)
-        {
-            Button[] rankButtons = new Button[] {juniorRankButton, peerRankButton, seniorRankButton};
-
-            // Map rankLevel to index
-            int selectedIndex = switch (rankLevel)
-            {
-                case "junior" -> 0;
-                case "peer" -> 1;
-                case "senior" -> 2;
-                default -> 1; // Default to "peer" (index 1)
-            };
-
-            // Update button styles
-            for (int count = 0; count < rankButtons.length; count++)
-            {
-                rankButtons[count].setTextSize(count == selectedIndex ? 28 : 20);
-                rankButtons[count].setTextColor(ContextCompat.getColor(requireContext(),
-                        count == selectedIndex ? R.color.gray_200 : R.color.gray_64));
-            }
+            mainActivity.buildBless("mail");
+            mainActivity.addRecord(mainActivity.textField.getText().toString());
         }
     }
 

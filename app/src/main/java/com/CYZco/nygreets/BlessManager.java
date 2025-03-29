@@ -5,6 +5,7 @@ public class BlessManager extends Bless {
     public String childBless, teenBless, adultBless, elderBless = "";
     public final String[] STAGES = {"童年", "青年", "成年", "老年"};
     public final String[] FESTIVALS = {"新年快樂", "父親節快樂", "母親節快樂", "生日快樂", "身體健康"};
+    public final String[] YOU = {"你", "妳" ,"您"};
 
     private String[] extractBlesses(String bless) {
         return bless.split(" ");
