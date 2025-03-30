@@ -8,8 +8,8 @@
     android:layout_marginRight="50dp"
     android:layout_marginTop="20dp"
     android:layout_marginBottom="20dp"
-    app:cardCornerRadius="40dp"
-    app:cardElevation="3dp">
+    app:cardCornerRadius="60dp"
+    app:cardElevation="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"

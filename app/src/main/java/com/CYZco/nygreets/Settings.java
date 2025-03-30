@@ -1,28 +1,31 @@
 package com.CYZco.nygreets;
 
-import android.os.Build;
 import android.util.Log;
+import android.os.Build;
 import android.view.View;
 import android.os.Bundle;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.text.Editable;
 import android.widget.Spinner;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.graphics.Shader;
+import android.text.TextWatcher;
+import android.view.MotionEvent;
+import android.widget.AdapterView;
 import android.view.LayoutInflater;
 import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.graphics.RenderEffect;
-
+import android.annotation.SuppressLint;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 public class Settings extends DialogFragment
 {
     private View rootView;
-    public EditText targetName;
+    public EditText name;
     public Spinner stageSpinner;
     public Spinner eventSelector;
     public Spinner youSelector;
@@ -43,23 +46,23 @@ public class Settings extends DialogFragment
 
         // Initialize views
         stageSpinner = view.findViewById(R.id.stage_spinner);
-        eventSelector = view.findViewById(R.id.festival);
+        eventSelector = view.findViewById(R.id.event);
         youSelector = view.findViewById(R.id.you);
         dear = view.findViewById(R.id.dear);
-        targetName = view.findViewById(R.id.name);
+        name = view.findViewById(R.id.name);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.STAGES);
-        ArrayAdapter<String> festivalAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.FESTIVALS);
-        ArrayAdapter<String> youAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_item, BLESS_MANAGER.YOU);
+        ArrayAdapter<String> stageAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, BLESS_MANAGER.STAGES);
+        ArrayAdapter<String> festivalAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, BLESS_MANAGER.FESTIVALS);
+        ArrayAdapter<String> youAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, BLESS_MANAGER.YOU);
 
         // Set layout for the dropdown
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        festivalAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
-        youAdapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
+        stageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        festivalAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        youAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
 
         // Apply the adapter to the spinner
-        stageSpinner.setAdapter(adapter);
+        stageSpinner.setAdapter(stageAdapter);
         eventSelector.setAdapter(festivalAdapter);
         youSelector.setAdapter(youAdapter);
 
@@ -68,30 +71,100 @@ public class Settings extends DialogFragment
         realTimeUpdate(stageSpinner);
         realTimeUpdate(eventSelector);
         realTimeUpdate(youSelector);
+        realTimeUpdate(name);
 
-        dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.gray_200 : R.color.gray_64));
+        dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.white : R.color.white_a25));
     }
 
+    // real-time update name to blessing text when editing
+    private void realTimeUpdate(EditText editText)
+    {
+        if (isAdded() && getActivity() == null)
+            return;
+
+        mainActivity = (MainActivity) requireActivity();
+        final boolean[] isFirstTriggered = {true};
+
+        editText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                if (isAdded() && getActivity() == null)
+                    return;
+
+                if (isFirstTriggered[0])
+                {
+                    isFirstTriggered[0] = false;
+                    return;
+                }
+                blessTextUpdate();
+            }
+        });
+    }
+
+    // real-time update spinner to blessing text when selecting
+    @SuppressLint("ClickableViewAccessibility")
     private void realTimeUpdate(Spinner spinner)
     {
-        if (isAdded() && getActivity() != null)
-        {
-            mainActivity = (MainActivity) requireActivity();
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-            {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-                {
-                    if (isAdded() && getActivity() != null)
-                        blessTextUpdate();
-                }
+        if (isAdded() && getActivity() == null)
+            return;
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
-            });
-        }
+        mainActivity = (MainActivity) requireActivity();
+
+        // vanish the spinner to avoid overlaying
+        spinner.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (spinner.isShown())
+                    spinner.setAlpha(0f);
+            }
+
+            if (event.getAction() == MotionEvent.ACTION_UP)
+            {
+                if (!spinner.isShown())
+                    spinner.setAlpha(1f);
+            }
+
+            return false;
+        });
+
+        // avoid spinner vanishing, when not selecting any option
+//        spinner.setOnTouchListener((v, event) -> {
+//            if (!spinner.isShown())
+//            {
+//                spinner.setAlpha(1f);
+//            }
+//            return false;
+//        });
+
+        // avoid spinner vanishing, when selecting the same option
+        spinner.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
+            spinner.setAlpha(1f); // Restore visibility
+        });
+
+        // avoid spinner vanishing, when selected an option
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if (isAdded() && getActivity() != null)
+                {
+                    spinner.setAlpha(1f);
+                    blessTextUpdate();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
+    // update, refresh blessing text
     private void blessTextUpdate()
     {
         // should be use the method within isAdded() && getActivity() != null
@@ -102,11 +175,13 @@ public class Settings extends DialogFragment
         // assign updated values to the mainActivity
         mainActivity.you = youSelector.getSelectedItem().toString();
         mainActivity.event = eventSelector.getSelectedItem().toString();
+        mainActivity.name = name.getText().toString();
 
         // Update the text field
         mainActivity.addRecord(mainActivity.textField.getText().toString());
     }
 
+    // navigate decision on adding "dear"
     private void dearButton(Button button)
     {
         if (isAdded() && getActivity() != null)
@@ -124,10 +199,11 @@ public class Settings extends DialogFragment
         }
     }
 
+    // update text colours
     public void dearButtonSetting()
     {
         // real-time update text colours
-        dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.gray_200 : R.color.gray_64));
+        dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.white : R.color.white_a25));
 
         // update blessing text
         if (!mainActivity.saveBlesses.get(0).isEmpty())
@@ -163,8 +239,8 @@ public class Settings extends DialogFragment
     public void onStop()
     {
         super.onStop();
-        // Remove blur effect when the dialog is dismissed
 
+        // Remove blur effect when the dialog is dismissed
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && rootView != null)
             rootView.setRenderEffect(null);
     }

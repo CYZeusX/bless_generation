@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tutorial_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -65,6 +66,7 @@
             android:elevation="20dp">
 
             <TextView
+                android:id="@+id/bless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/relativeLayout"
@@ -88,7 +90,7 @@
             android:id="@+id/copy_and_convert"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:background="@drawable/rect_round30_stroke1_white"
+            android:background="@drawable/light_glass_pane"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -105,7 +107,7 @@
                 android:background="@color/nul"
                 android:gravity="center"
                 android:text="@string/copy"
-                android:textColor="@color/gray_50"
+                android:textColor="@color/white_a75"
                 android:textSize="28sp"
                 android:textStyle="bold"/>
 
@@ -119,7 +121,7 @@
                 android:gravity="center"
                 android:text="@string/convert"
                 android:textStyle="bold"
-                android:textColor="@color/gray_50"
+                android:textColor="@color/white_a75"
                 android:textSize="28sp"/>
         </LinearLayout>
     </RelativeLayout>
@@ -149,16 +151,18 @@
         </com.bosphere.fadingedgelayout.FadingEdgeLayout>
     </RelativeLayout>
 
-
     <LinearLayout
         android:id="@+id/bar"
         android:layout_width="match_parent"
-        android:layout_height="120sp"
-        android:elevation="5dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="35dp"
+        android:layout_height="110dp"
         android:background="@drawable/bar"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="35dp"
+        android:baselineAligned="false"
+        android:elevation="5dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -175,8 +179,8 @@
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_centerInParent="true"
-                android:elevation="5dp"
-                android:background="@drawable/rect_round45"/>
+                android:background="@drawable/rect_round45"
+                android:elevation="5dp" />
 
             <ImageView
                 android:id="@+id/home_icon"
@@ -185,8 +189,8 @@
                 android:layout_alignTop="@+id/home_button"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="21.5dp"
-                android:elevation="5dp"
                 android:adjustViewBounds="true"
+                android:elevation="5dp"
                 android:src="@drawable/home_icon" />
         </RelativeLayout>
 
@@ -202,8 +206,8 @@
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_centerInParent="true"
-                android:elevation="5dp"
-                android:background="@drawable/rect_round45" />
+                android:background="@drawable/rect_round45"
+                android:elevation="5dp" />
 
             <ImageView
                 android:id="@+id/setting_icon"
@@ -212,17 +216,17 @@
                 android:layout_alignEnd="@+id/settingButton"
                 android:layout_alignRight="@+id/settingButton"
                 android:layout_centerVertical="true"
-                android:elevation="5dp"
                 android:layout_marginEnd="24dp"
                 android:adjustViewBounds="true"
-                android:src="@drawable/bless_setting"/>
+                android:elevation="5dp"
+                android:src="@drawable/bless_setting" />
 
             <RelativeLayout
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/dark_gray_a50_r45"
-                android:elevation="8dp"/>
+                android:elevation="8dp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -236,9 +240,9 @@
                 android:id="@+id/tut_button"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:elevation="5dp"
                 android:layout_centerInParent="true"
-                android:background="@drawable/rect_round45"/>
+                android:background="@drawable/rect_round45"
+                android:elevation="5dp" />
 
             <ImageView
                 android:id="@+id/tutorial_icon"
@@ -246,17 +250,17 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/tut_button"
                 android:layout_centerHorizontal="true"
-                android:elevation="5dp"
                 android:layout_marginTop="29dp"
                 android:adjustViewBounds="true"
-                android:src="@drawable/tutorial_icon"/>
+                android:elevation="5dp"
+                android:src="@drawable/tutorial_icon" />
 
             <RelativeLayout
                 android:layout_width="90dp"
                 android:layout_height="90dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/dark_gray_a50_r45"
-                android:elevation="8dp"/>
+                android:elevation="8dp" />
         </RelativeLayout>
     </LinearLayout>
 

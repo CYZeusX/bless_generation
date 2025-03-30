@@ -1,15 +1,31 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings_dialog"
+    android:layout_gravity="center"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
+    <Spinner
+        android:id="@+id/stage_spinner"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignEnd="@+id/blessFormat"
+        android:layout_alignRight="@+id/blessFormat"
+        android:background="@drawable/dark_glass_pane"
+        android:popupBackground="@drawable/dark_glass_pane"
+        android:spinnerMode="dropdown"
+        tools:ignore="NotSibling" />
+
     <RelativeLayout
         android:id="@+id/blessFormat"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/stage_spinner"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true">
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/dear"
@@ -17,41 +33,36 @@
             android:layout_height="60dp"
             android:gravity="center"
             android:text="@string/dear"
-            android:textColor="@color/gray_64"
-            android:textSize="25sp"
-            android:background="@drawable/rect_round30_stroke1"
-            app:shapeAppearanceOverlay="@style/cornerLeft_30" />
+            android:textColor="@color/white_a25"
+            android:textSize="30sp"
+            android:background="@drawable/light_glass_pane"/>
 
         <EditText
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/dear"
             android:layout_toRightOf="@+id/dear"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:background="@color/nul"
-            android:hint="@string/name_hint"
+            android:layout_toEndOf="@+id/dear"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
             android:inputType="text"
+            android:hint="@string/name_hint"
+            android:textSize="30sp"
             android:textColor="@color/white"
-            android:textColorHint="@color/gray_150"
-            android:textSize="25sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:textColorHint="@color/white_a25"
+            android:background="@color/nul"/>
 
         <TextView
             android:id="@+id/colon"
             android:layout_width="30dp"
             android:layout_height="60dp"
-            android:layout_alignEnd="@+id/festival"
-            android:layout_alignRight="@+id/festival"
             android:layout_toEndOf="@+id/name"
             android:layout_toRightOf="@+id/name"
             android:gravity="center"
-            android:text=":"
+            android:text="@string/colon"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="30sp"
             app:shapeAppearanceOverlay="@style/cornerLeft_30" />
 
         <TextView
@@ -59,11 +70,13 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_below="@+id/name"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="@string/wish"
-            android:textSize="25sp"
             android:textColor="@color/white"
+            android:textSize="30sp"
             app:shapeAppearanceOverlay="@style/cornerLeft_30" />
 
         <Spinner
@@ -71,46 +84,27 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignTop="@+id/wish"
-            android:layout_alignEnd="@+id/dear"
-            android:layout_alignRight="@+id/dear"
             android:layout_gravity="center"
+            android:layout_marginStart="-8dp"
+            android:layout_marginLeft="-8dp"
             android:layout_toEndOf="@+id/wish"
             android:layout_toRightOf="@+id/wish"
-            android:background="@drawable/rect_round30_stroke1"
-            android:gravity="center"
-            android:popupBackground="@drawable/rect_round30_stroke1"
-            android:spinnerMode="dropdown"
-            android:text="你"
-            android:textColor="@color/white"
-            android:textSize="25sp"
-            app:shapeAppearanceOverlay="@style/cornerLeft_30" />
+            android:background="@drawable/light_glass_pane"
+            android:popupBackground="@drawable/light_glass_pane"
+            android:spinnerMode="dropdown" />
 
         <Spinner
-            android:id="@+id/festival"
-            android:layout_width="150dp"
+            android:id="@+id/event"
+            android:layout_width="180dp"
             android:layout_height="60dp"
-            android:layout_alignStart="@+id/name"
-            android:layout_alignLeft="@+id/name"
             android:layout_alignTop="@+id/you"
             android:layout_gravity="center"
-            android:background="@drawable/rect_round30_stroke1"
-            android:popupBackground="@drawable/rect_round30_stroke1"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/you"
+            android:layout_toRightOf="@+id/you"
+            android:background="@drawable/light_glass_pane"
+            android:popupBackground="@drawable/light_glass_pane"
             android:spinnerMode="dropdown" />
     </RelativeLayout>
-
-    <Spinner
-        android:id="@+id/stage_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_below="@+id/blessFormat"
-        android:layout_alignEnd="@+id/blessFormat"
-        android:layout_alignRight="@+id/blessFormat"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/rect_round30_stroke1"
-        android:popupBackground="@drawable/rect_round30_stroke1"
-        android:spinnerMode="dropdown" />
-
 </RelativeLayout>

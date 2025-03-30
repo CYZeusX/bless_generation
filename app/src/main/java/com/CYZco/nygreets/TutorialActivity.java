@@ -18,6 +18,8 @@ import android.os.Handler;
 import android.view.View;
 import android.os.Bundle;
 import android.os.Build;
+import android.widget.TextView;
+
 import java.util.List;
 
 public class TutorialActivity extends AppCompatActivity
@@ -56,6 +58,10 @@ public class TutorialActivity extends AppCompatActivity
         Button tutorial = findViewById(R.id.tut_button);
         home = findViewById(R.id.home_button);
         tut_SCROLL = findViewById(R.id.tutorial_scroll);
+        TextView bless = findViewById(R.id.bless);
+
+        bless.setLayerType(View.LAYER_TYPE_SOFTWARE, bless.getPaint());
+        bless.setShadowLayer(150f, 0f, 0f, getResources().getColor(R.color.yellow_a50));
 
         Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
         Animation slideGone = AnimationUtils.loadAnimation(this, R.anim.slide_gone);

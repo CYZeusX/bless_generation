@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
     public String rankDefault = "without dear";
     public String textMode = "mail";
     public String show_Greet;
+    public String name = "";
     public String you = "你";
     public String event = "";
     private final ArrayList<String> RECORDS = new ArrayList<>(2);
@@ -300,7 +301,7 @@ public class MainActivity extends AppCompatActivity
 
         // algorithms to set the elements in the blessing sentence
         String dear = "親愛的 ";
-        String name = SETTING.targetName == null ? "某某某" : SETTING.targetName.getText().toString();
+        name = SETTING.name == null ? "某某某" : SETTING.name.getText().toString();
         String wish = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
         you = SETTING.youSelector == null ? "你" : SETTING.youSelector.getSelectedItem().toString();
         event = SETTING.eventSelector == null ? "新年快樂" : SETTING.eventSelector.getSelectedItem().toString();
@@ -337,7 +338,7 @@ public class MainActivity extends AppCompatActivity
         String wish = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
 
         // algorithms to set the name
-        String name = SETTING.targetName != null ? SETTING.targetName.getText().toString() : "某某某";
+        String name = SETTING.name != null ? SETTING.name.getText().toString() : "某某某";
         you = SETTING.youSelector == null ? "你" : SETTING.youSelector.getSelectedItem().toString();
         if (name.isEmpty()) name = you;
 

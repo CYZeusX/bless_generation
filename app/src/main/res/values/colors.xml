@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="black">#FF000000</color>
+    <color name="black_a90">#E6000000</color>
+    <color name="black_a85">#D9000000</color>
+    <color name="black_a75">#BF000000</color>
+    <color name="black_a50">#80000000</color>
+    <color name="black_a25">#40000000</color>
+    <color name="black_a15">#25000000</color>
     <color name="gray_05">#050505</color>
     <color name="gray_10">#0A0A0A</color>
     <color name="gray_15">#0F0F0F</color>
@@ -18,11 +24,20 @@
     <color name="gray_200">#C8C8C8</color>
     <color name="gray_208">#D0D0D0</color>
     <color name="gray_225">#E1E1E1</color>
+    <color name="gray_240_a15">#26F0F0F0</color>
+    <color name="gray_240_a25">#40F0F0F0</color>
+    <color name="gray_240_a50">#80F0F0F0</color>
+    <color name="gray_240_a75">#BFF0F0F0</color>
     <color name="gray_240">#F0F0F0</color>
+    <color name="white_a15">#26FFFFFF</color>
+    <color name="white_a25">#40FFFFFF</color>
     <color name="white_a50">#80FFFFFF</color>
+    <color name="white_a75">#BFFFFFFF</color>
+    <color name="white_a90">#E6FFFFFF</color>
     <color name="white">#FFFFFFFF</color>
 
-    <color name="dark_red">#120000</color>
+    <color name="dark_red_35">#230000</color>
+    <color name="dark_red_25">#190000</color>
     <color name="red_285_25">#B91919</color>
     <color name="red">#ff0000</color>
     <color name="red_225_75">#E14B4B</color>

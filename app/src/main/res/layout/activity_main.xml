@@ -18,7 +18,7 @@
         <LinearLayout
             android:id="@+id/bar"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="110dp"
             android:background="@drawable/bar"
             android:elevation="5dp"
             android:layout_alignParentStart="true"
@@ -26,8 +26,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
             android:layout_marginBottom="35dp">
 
             <RelativeLayout
@@ -163,7 +163,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:shadowColor="@color/white"
+                android:shadowColor="@color/yellow"
                 android:shadowRadius="30"
                 android:text="@string/bless"
                 android:textColor="@color/white"
@@ -181,7 +181,7 @@
             android:id="@+id/copy_and_convert"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:background="@drawable/rect_round30_stroke1_white"
+            android:background="@drawable/light_glass_pane"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
@@ -198,7 +198,7 @@
                 android:background="@color/nul"
                 android:gravity="center"
                 android:text="@string/copy"
-                android:textColor="@color/gray_50"
+                android:textColor="@color/white_a75"
                 android:textSize="28sp"
                 android:textStyle="bold"/>
 
@@ -212,7 +212,7 @@
                 android:gravity="center"
                 android:text="@string/convert"
                 android:textStyle="bold"
-                android:textColor="@color/gray_50"
+                android:textColor="@color/white_a75"
                 android:textSize="28sp"/>
         </LinearLayout>
     </RelativeLayout>
@@ -222,7 +222,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:elevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -314,10 +314,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="fill"
+                android:paddingLeft="15dp"
                 android:maxWidth="300dp"
                 android:text="@string/tutorial"
                 android:textColor="@color/gray_150"
-                android:textSize="33sp" />
+                android:textSize="40sp" />
         </ScrollView>
     </com.bosphere.fadingedgelayout.FadingEdgeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

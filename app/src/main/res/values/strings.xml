@@ -1,6 +1,6 @@
 <resources>
     <string name="nul"></string>
-    <string name="name_hint">請輸入稱呼</string>
+    <string name="name_hint">稱呼</string>
     <string name="junior">晚輩</string>
     <string name="medior">平輩</string>
     <string name="senior">長輩</string>
@@ -14,4 +14,5 @@
     <string name="blessTutorial">教學</string>
     <string name="dear">親愛的</string>
     <string name="wish">祝</string>
+    <string name="colon">:</string>
 </resources>
