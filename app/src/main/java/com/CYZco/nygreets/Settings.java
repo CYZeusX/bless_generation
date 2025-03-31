@@ -18,7 +18,6 @@ import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import android.graphics.RenderEffect;
-import android.annotation.SuppressLint;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -27,8 +26,8 @@ public class Settings extends DialogFragment
     private View rootView;
     public EditText name;
     public Spinner stageSpinner;
-    public Spinner eventSelector;
-    public Spinner youSelector;
+    public Spinner eventSpinner;
+    public Spinner youSpinner;
     public Button dear;
     private boolean textMode = true; //true-senior, false-without dear
     private MainActivity mainActivity;
@@ -45,32 +44,33 @@ public class Settings extends DialogFragment
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize views
-        stageSpinner = view.findViewById(R.id.stage_spinner);
-        eventSelector = view.findViewById(R.id.event);
-        youSelector = view.findViewById(R.id.you);
+        rootView = view.findViewById(R.id.settings_dialog);
+        stageSpinner = view.findViewById(R.id.stage);
+        eventSpinner = view.findViewById(R.id.event);
+        youSpinner = view.findViewById(R.id.you);
         dear = view.findViewById(R.id.dear);
         name = view.findViewById(R.id.name);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<String> stageAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, BLESS_MANAGER.STAGES);
-        ArrayAdapter<String> festivalAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, BLESS_MANAGER.FESTIVALS);
+        ArrayAdapter<String> eventAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, BLESS_MANAGER.EVENTS);
         ArrayAdapter<String> youAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, BLESS_MANAGER.YOU);
 
         // Set layout for the dropdown
         stageAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
-        festivalAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        eventAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
         youAdapter.setDropDownViewResource(R.layout.spinner_dropdown);
 
         // Apply the adapter to the spinner
         stageSpinner.setAdapter(stageAdapter);
-        eventSelector.setAdapter(festivalAdapter);
-        youSelector.setAdapter(youAdapter);
+        eventSpinner.setAdapter(eventAdapter);
+        youSpinner.setAdapter(youAdapter);
 
         // real time update decided option to blessing text
-        dearButton(dear);
+        realTimeUpdate(dear);
         realTimeUpdate(stageSpinner);
-        realTimeUpdate(eventSelector);
-        realTimeUpdate(youSelector);
+        realTimeUpdate(eventSpinner);
+        realTimeUpdate(youSpinner);
         realTimeUpdate(name);
 
         dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.white : R.color.white_a25));
@@ -108,7 +108,6 @@ public class Settings extends DialogFragment
     }
 
     // real-time update spinner to blessing text when selecting
-    @SuppressLint("ClickableViewAccessibility")
     private void realTimeUpdate(Spinner spinner)
     {
         if (isAdded() && getActivity() == null)
@@ -117,34 +116,22 @@ public class Settings extends DialogFragment
         mainActivity = (MainActivity) requireActivity();
 
         // vanish the spinner to avoid overlaying
-        spinner.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+        spinner.setOnTouchListener((v, event) ->
+        {
+            if (event.getAction() == MotionEvent.ACTION_DOWN)
+            {
+                spinner.performClick();
                 if (spinner.isShown())
                     spinner.setAlpha(0f);
             }
-
-            if (event.getAction() == MotionEvent.ACTION_UP)
-            {
-                if (!spinner.isShown())
-                    spinner.setAlpha(1f);
-            }
-
             return false;
         });
 
-        // avoid spinner vanishing, when not selecting any option
-//        spinner.setOnTouchListener((v, event) -> {
-//            if (!spinner.isShown())
-//            {
-//                spinner.setAlpha(1f);
-//            }
-//            return false;
-//        });
+        // avoid spinner vanishing, when not clicking blank area to quit
+
 
         // avoid spinner vanishing, when selecting the same option
-        spinner.getViewTreeObserver().addOnGlobalLayoutListener(() -> {
-            spinner.setAlpha(1f); // Restore visibility
-        });
+        spinner.getViewTreeObserver().addOnGlobalLayoutListener(() -> spinner.setAlpha(1f));
 
         // avoid spinner vanishing, when selected an option
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -164,17 +151,16 @@ public class Settings extends DialogFragment
         });
     }
 
-    // update, refresh blessing text
+    // update, refresh blessing text,
+    // the method should be used within -> isAdded() && getActivity() != null
     private void blessTextUpdate()
     {
-        // should be use the method within isAdded() && getActivity() != null
-
         // Initialize views
         mainActivity.buildBless("mail");
 
         // assign updated values to the mainActivity
-        mainActivity.you = youSelector.getSelectedItem().toString();
-        mainActivity.event = eventSelector.getSelectedItem().toString();
+        mainActivity.you = youSpinner.getSelectedItem().toString();
+        mainActivity.event = eventSpinner.getSelectedItem().toString();
         mainActivity.name = name.getText().toString();
 
         // Update the text field
@@ -182,7 +168,7 @@ public class Settings extends DialogFragment
     }
 
     // navigate decision on adding "dear"
-    private void dearButton(Button button)
+    private void realTimeUpdate(Button button)
     {
         if (isAdded() && getActivity() != null)
         {

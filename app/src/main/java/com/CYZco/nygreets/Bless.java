@@ -3,6 +3,7 @@ package com.CYZco.nygreets;
 /***
  * this class is intent to be the database for the app,
  * and stores the text blessings.
+ * it uses space " " to separate and split each blessings
  */
 public class Bless {
 
@@ -33,29 +34,29 @@ public class Bless {
 
 
     //Blessings for Fathers Day
-    public String childFathersDayBless = "";
-    public String teenFathersDayBless = "";
-    public String adultFathersDayBless = "";
-    public String elderFathersDayBless = "";
+    public String childFathersDayBless = "父親節快樂/童年1\uD83D\uDE03 父親節快樂/童年2\uD83D\uDE03";
+    public String teenFathersDayBless = "父親節快樂/青年1\uD83D\uDE03 父親節快樂/青年2\uD83D\uDE03";
+    public String adultFathersDayBless = "父親節快樂/成年1\uD83D\uDE03 父親節快樂/成年2\uD83D\uDE03";
+    public String elderFathersDayBless = "父親節快樂/老年1\uD83D\uDE03 父親節快樂/老年2\uD83D\uDE03";
 
 
     //Blessings for Mothers Day
-    public String childMothersDayBless = "";
-    public String teenMothersDayBless = "";
-    public String adultMothersDayBless = "";
-    public String elderMothersDayBless = "";
+    public String childMothersDayBless = "母親節快樂/童年1\uD83D\uDE03 母親節快樂/童年2\uD83D\uDE03";
+    public String teenMothersDayBless = "母親節快樂/青年1\uD83D\uDE03 母親節快樂/青年2\uD83D\uDE03";
+    public String adultMothersDayBless = "母親節快樂/成年1\uD83D\uDE03 母親節快樂/成年2\uD83D\uDE03";
+    public String elderMothersDayBless = "母親節快樂/老年1\uD83D\uDE03 母親節快樂/老年2\uD83D\uDE03";
 
 
     //Blessings for Birthday
-    public String childBirthdayBless = "";
-    public String teenBirthdayBless = "";
-    public String adultBirthdayBless = "";
-    public String elderBirthdayBless = "";
+    public String childBirthdayBless = "生日快樂/童年1\uD83D\uDE03 生日快樂/童年2\uD83D\uDE03";
+    public String teenBirthdayBless = "生日快樂/青年1\uD83D\uDE03 生日快樂/青年2\uD83D\uDE03";
+    public String adultBirthdayBless = "生日快樂/成年1\uD83D\uDE03 生日快樂/成年2\uD83D\uDE03";
+    public String elderBirthdayBless = "生日快樂/老年1\uD83D\uDE03 生日快樂/老年2\uD83D\uDE03";
 
 
     //Blessings for Healthy (身體健康)
-    public String childHealthyBless = "";
-    public String teenHealthyBless = "";
-    public String adultHealthyBless = "";
-    public String elderHealthyBless = "";
+    public String childHealthBless = "身體健康/童年1\uD83D\uDE03 身體健康/童年2\uD83D\uDE03";
+    public String teenHealthBless = "身體健康/青年1\uD83D\uDE03 身體健康/青年2\uD83D\uDE03";
+    public String adultHealthBless = "身體健康/成年1\uD83D\uDE03 身體健康/成年2\uD83D\uDE03";
+    public String elderHealthBless = "身體健康/老年1\uD83D\uDE03 身體健康/老年2\uD83D\uDE03";
 }

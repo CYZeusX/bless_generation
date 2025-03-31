@@ -49,12 +49,11 @@ public class MainActivity extends AppCompatActivity
     private final Settings SETTING = new Settings();
     private final BlessManager BLESS_MANAGER = new BlessManager();
 
-    String[] kidBlesses = BLESS_MANAGER.getGreetingsByStage("童年");
-    String[] teenBlesses = BLESS_MANAGER.getGreetingsByStage("青年");
-    String[] adultBlesses = BLESS_MANAGER.getGreetingsByStage("成年");
-    String[] elderBlesses = BLESS_MANAGER.getGreetingsByStage("老年");
-    String[] blessArrays;
-    ArrayList<String> saveBlesses = new ArrayList<>();
+    private String[] kidBlesses;
+    private String[] teenBlesses;
+    private String[] adultBlesses;
+    private String[] elderBlesses;
+    public ArrayList<String> saveBlesses = new ArrayList<>();
 
     public void addRecord(String s)
     {
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         RECORDS.add(s);
     }
 
-    private String newGreet(String[] blessArrays)
+    private String newRandomBless(String[] blessArrays)
     {
         String[] blessingCopy = Arrays.copyOf(blessArrays, blessArrays.length);
         ArrayList<String> copyArrayLists = new ArrayList<>(Arrays.asList(blessingCopy));
@@ -87,9 +86,10 @@ public class MainActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        saveBlesses.add("");
-        RECORDS.add("");
-        RECORDS.add("");
+
+        String event = SETTING.eventSpinner == null ? "新年快樂" : SETTING.eventSpinner.getSelectedItem().toString();
+        BLESS_MANAGER.setGreetingsByEvent(event);
+        assignBlessByStage();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
         {
@@ -97,12 +97,12 @@ public class MainActivity extends AppCompatActivity
             window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
             window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
             window.getDecorView().setSystemUiVisibility
-                (
-                    View.SYSTEM_UI_FLAG_FULLSCREEN |
-                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                );
+            (
+                View.SYSTEM_UI_FLAG_FULLSCREEN |
+                View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            );
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -123,9 +123,15 @@ public class MainActivity extends AppCompatActivity
         copyButton = findViewById(R.id.copy);
         TextView bless = findViewById(R.id.bless);
 
+        // populate the records
+        saveBlesses.add("");
+        RECORDS.add(textField.getText().toString());
+        RECORDS.add(textField.getText().toString());
+
+        // algorithms to initialize the elements
         bless.setLayerType(View.LAYER_TYPE_SOFTWARE, bless.getPaint());
         bless.setShadowLayer(150f, 0f, 0f, getResources().getColor(R.color.yellow_a50));
-        settingButton.setEnabled(false);
+        settingButton.setVisibility(View.INVISIBLE);
         showTextScroller.setVerticalScrollBarEnabled(false);
         Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         generatePlace.startAnimation(slideUp);
@@ -133,59 +139,66 @@ public class MainActivity extends AppCompatActivity
         generateButton.setOnClickListener(v ->
         {
             Spinner stageSpinner = SETTING.stageSpinner;
+            Spinner eventSpinner = SETTING.eventSpinner;
+            String events = eventSpinner == null ? "新年快樂" : eventSpinner.getSelectedItem().toString();
+            BLESS_MANAGER.setGreetingsByEvent(events);
 
             if (stageSpinner == null)
             {
                 Log.d("MainActivity", "stageSpinner is null");
-                setGreet("成年");
+                setBless("成年");
                 return;
             }
 
-            setGreet(stageSpinner.getSelectedItem().toString());
+            setBless(stageSpinner.getSelectedItem().toString());
         });
 
         emojiButton.setOnClickListener(e->
         {
             String getMessage = textField.getText().toString();
-            if (!saveBlesses.get(0).isEmpty())
-            {
-                if (getMessage.contains(" "))
-                {
-                    String wishEmoji = "\u3297\uFE0F";
-                    String blessWithEmoji = saveBlesses.get(0);
-                    String blessWithoutEmoji = removeEmoji(blessWithEmoji);
-                    String noEmojiMessage = getMessage.substring(0, getMessage.lastIndexOf(" ")).replace(wishEmoji,"祝");
-                    String emojiReplacedMessage = noEmojiMessage.replace("祝", wishEmoji);
+            if (saveBlesses.get(0).isEmpty())
+                return;
 
-                    String text = !emojiMode ? blessWithEmoji : blessWithoutEmoji;
-                    String message = !emojiMode ? emojiReplacedMessage : noEmojiMessage;
-                    int shadowColor = emojiMode ? getResources().getColor(R.color.green) : getResources().getColor(R.color.red);
-                    String differentEmojiEffect = emojiMode ? "\uD83D\uDE04" : "\uD83D\uDE36"; // ^v^ & :
+            if (!getMessage.contains(" "))
+                return;
 
-                    emojiButton.setText(differentEmojiEffect);
-                    emojiButton.setShadowLayer(40f, 0f , 0f, shadowColor);
+            String wishEmoji = "\u3297\uFE0F";
+            String blessWithEmoji = saveBlesses.get(0);
+            String blessWithoutEmoji = removeEmoji(blessWithEmoji);
+            String noEmojiMessage = getMessage.substring(0, getMessage.lastIndexOf(" ")).replace(wishEmoji,"祝");
+            String emojiReplacedMessage = noEmojiMessage.replace("祝", wishEmoji);
 
-                    emojiMode = !emojiMode;
-                    String textWithEmoji = message + " " + text;
+            String blesses = !emojiMode ? blessWithEmoji : blessWithoutEmoji;
+            String message = !emojiMode ? emojiReplacedMessage : noEmojiMessage;
+            int shadowColor = emojiMode ? getResources().getColor(R.color.green) : getResources().getColor(R.color.red);
+            String differentEmojiEffect = emojiMode ? "\uD83D\uDE04" : "\uD83D\uDE36"; // :D & :|
 
-                    addRecord(textWithEmoji);
-                    textField.setText(textWithEmoji);
-                }
-            }
+            emojiButton.setText(differentEmojiEffect);
+            emojiButton.setShadowLayer(40f, 0f , 0f, shadowColor);
+
+            emojiMode = !emojiMode;
+            String textWithEmoji = message + " " + blesses;
+
+            addRecord(textWithEmoji);
+            textField.setText(textWithEmoji);
         });
 
         showBlessing.setOnClickListener(v ->
         {
             Spinner stageSpinner = SETTING.stageSpinner;
-            String stage;
+            Spinner eventSpinner = SETTING.eventSpinner;
 
-            if (stageSpinner == null || stageSpinner.getSelectedItem() == null)
-                stage = "成年";
-            else stage = stageSpinner.getSelectedItem().toString();
+            // get the event and stage
+            String events = eventSpinner == null ? "新年快樂" : SETTING.eventSpinner.getSelectedItem().toString();
+            String stage = stageSpinner == null ? "成年" : SETTING.stageSpinner.getSelectedItem().toString();
 
+            // get the greetings
+            BLESS_MANAGER.setGreetingsByEvent(events);
             String[] blessArrays = BLESS_MANAGER.getGreetingsByStage(stage);
             StringBuilder greet = new StringBuilder();
-            for (int i=0; i<blessArrays.length; i++)
+
+            // build the blessing sentence
+            for (int i=0; i< blessArrays.length; i++)
             {
                 String arrays = blessArrays[i];
                 if (i != blessArrays.length-1)
@@ -193,14 +206,17 @@ public class MainActivity extends AppCompatActivity
                 greet.append(arrays);
             }
 
+            // fine tune the text style, and show the greetings
             show_Greet = "\n" + greet + "\n";
             String text;
             String check = textField.getText().toString();
 
+            // algorithms to store text cache, and switch emoji button visibility
             boolean shown = check.equals(show_Greet);
             text = shown ? RECORDS.get(1) : show_Greet;
             emojiButton.setVisibility(shown ? View.VISIBLE : View.INVISIBLE);
 
+            // fine tune the text style
             float size = 24f;
             textField.setTextColor(Color.BLACK);
             textField.setTextSize(TypedValue.COMPLEX_UNIT_DIP, size);
@@ -246,32 +262,46 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void setGreet(String selected)
+    private void assignBlessByStage()
     {
-        switch (selected)
-        {
-            case "童年":
-                blessArrays = kidBlesses;
-                break;
-            case "青年":
-                blessArrays = teenBlesses;
-                break;
-            case "成年":
-                blessArrays = adultBlesses;
-                break;
-            case "老年":
-                blessArrays = elderBlesses;
-                break;
-            default:
-                return;
-        }
+        kidBlesses = BLESS_MANAGER.getGreetingsByStage("童年");
+        teenBlesses = BLESS_MANAGER.getGreetingsByStage("青年");
+        adultBlesses = BLESS_MANAGER.getGreetingsByStage("成年");
+        elderBlesses = BLESS_MANAGER.getGreetingsByStage("老年");
+    }
 
-        emojiButton.setVisibility(View.VISIBLE);
+    private String[] assignBlesses(String selected)
+    {
+        // initialize the spinner, and get the event
+        Spinner eventSpinner = SETTING.eventSpinner;
+        String events = eventSpinner == null ? "新年快樂" : eventSpinner.getSelectedItem().toString();
+
+        // set and assign corresponding greetings
+        BLESS_MANAGER.setGreetingsByEvent(events);
+        assignBlessByStage();
+
+        return switch (selected)
+        {
+            case "童年" -> kidBlesses;
+            case "青年" -> teenBlesses;
+            case "成年" -> adultBlesses;
+            case "老年" -> elderBlesses;
+            default -> null;
+        };
+    }
+
+    private void setBless(String selectedStage)
+    {
         textField.setTextColor(Color.BLACK);
-        settingButton.setEnabled(true);
+        emojiButton.setVisibility(View.VISIBLE);
+        settingButton.setVisibility(View.VISIBLE);
         settingButton.setBackground(ContextCompat.getDrawable(MainActivity.this, R.drawable.rect_round45));
 
-        String onEmoji = newGreet(blessArrays);
+        Spinner eventSpinner = SETTING.eventSpinner;
+        String events = eventSpinner == null ? "新年快樂" : eventSpinner.getSelectedItem().toString();
+        BLESS_MANAGER.setGreetingsByEvent(events);
+
+        String onEmoji = newRandomBless(assignBlesses(selectedStage));
         saveBlesses.set(0, onEmoji);
         devBuildBless(onEmoji, "mail");
     }
@@ -303,8 +333,8 @@ public class MainActivity extends AppCompatActivity
         String dear = "親愛的 ";
         name = SETTING.name == null ? "某某某" : SETTING.name.getText().toString();
         String wish = Objects.equals(emoji, "y") ? "\u3297\uFE0F" : "祝";
-        you = SETTING.youSelector == null ? "你" : SETTING.youSelector.getSelectedItem().toString();
-        event = SETTING.eventSelector == null ? "新年快樂" : SETTING.eventSelector.getSelectedItem().toString();
+        you = SETTING.youSpinner == null ? "你" : SETTING.youSpinner.getSelectedItem().toString();
+        event = SETTING.eventSpinner == null ? "新年快樂" : SETTING.eventSpinner.getSelectedItem().toString();
         String formatAlign = "\n "; // important for emoji
 
         // algorithms to set the name
@@ -339,11 +369,11 @@ public class MainActivity extends AppCompatActivity
 
         // algorithms to set the name
         String name = SETTING.name != null ? SETTING.name.getText().toString() : "某某某";
-        you = SETTING.youSelector == null ? "你" : SETTING.youSelector.getSelectedItem().toString();
+        you = SETTING.youSpinner == null ? "你" : SETTING.youSpinner.getSelectedItem().toString();
         if (name.isEmpty()) name = you;
 
         // algorithms to set the event
-        event = SETTING.eventSelector == null ? "新年快樂" : SETTING.eventSelector.getSelectedItem().toString();
+        event = SETTING.eventSpinner == null ? "新年快樂" : SETTING.eventSpinner.getSelectedItem().toString();
 
         // build the blessing sentence
         String sentence = wish + name + event + "! " + greet;
