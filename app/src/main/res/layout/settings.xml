@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/settings_dialog"
     android:layout_gravity="center"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <Spinner
@@ -12,8 +12,6 @@
         android:layout_width="130dp"
         android:layout_height="45dp"
         android:layout_centerHorizontal="true"
-        android:layout_alignEnd="@+id/blessFormat"
-        android:layout_alignRight="@+id/blessFormat"
         android:background="@drawable/dark_glass_pane"
         android:popupBackground="@drawable/dark_glass_pane"
         android:spinnerMode="dropdown"
@@ -21,11 +19,11 @@
 
     <RelativeLayout
         android:id="@+id/blessFormat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="50dp"
-        android:layout_below="@+id/stage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_below="@+id/stage">
 
         <Button
             android:id="@+id/dear"
@@ -41,17 +39,16 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
-            android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/dear"
-            android:layout_toEndOf="@+id/dear"
             android:layout_marginStart="5dp"
             android:layout_marginLeft="5dp"
-            android:inputType="text"
+            android:layout_toEndOf="@+id/dear"
+            android:layout_toRightOf="@+id/dear"
+            android:background="@color/nul"
             android:hint="@string/name_hint"
-            android:textSize="30sp"
+            android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="@color/white_a25"
-            android:background="@color/nul"/>
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/colon"
@@ -103,6 +100,33 @@
             android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/you"
             android:layout_toRightOf="@+id/you"
+            android:background="@drawable/light_glass_pane"
+            android:popupBackground="@drawable/light_glass_pane"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/bless1"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/wish"
+            android:background="@drawable/light_glass_pane"
+            android:popupBackground="@drawable/light_glass_pane"
+            android:spinnerMode="dropdown" />
+
+        <Spinner
+            android:id="@+id/bless2"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_alignTop="@+id/bless1"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toEndOf="@+id/bless1"
+            android:layout_toRightOf="@+id/bless1"
             android:background="@drawable/light_glass_pane"
             android:popupBackground="@drawable/light_glass_pane"
             android:spinnerMode="dropdown" />

@@ -4,5 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:gravity="center"
-    android:textSize="30sp"
-    android:textColor="@color/white"/>
+    android:shadowColor="@color/gray_240_a75"
+    android:shadowRadius="50"
+    android:textSize="28sp"
+    android:textColor="@color/black"/>

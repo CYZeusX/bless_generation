@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity
         elderBlesses = BLESS_MANAGER.getGreetingsByStage("老年");
     }
 
-    private String[] assignBlesses(String selected)
+    public String[] assignBlesses(String selected)
     {
         // initialize the spinner, and get the event
         Spinner eventSpinner = SETTING.eventSpinner;
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity
         else setBlessingLineText(emojiDecision, messageDecision);
     }
 
-    public void setBlessingMail(String rankDefault, String emoji,String greet)
+    public void setBlessingMail(String rankDefault, String emoji, String greet)
     {
         // set the text mode
         textMode = "mail";

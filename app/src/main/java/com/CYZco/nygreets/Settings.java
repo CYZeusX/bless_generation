@@ -28,6 +28,8 @@ public class Settings extends DialogFragment
     public Spinner stageSpinner;
     public Spinner eventSpinner;
     public Spinner youSpinner;
+    public Spinner bless1Spinner;
+    public Spinner bless2Spinner;
     public Button dear;
     private boolean textMode = true; //true-senior, false-without dear
     private MainActivity mainActivity;
@@ -48,6 +50,8 @@ public class Settings extends DialogFragment
         stageSpinner = view.findViewById(R.id.stage);
         eventSpinner = view.findViewById(R.id.event);
         youSpinner = view.findViewById(R.id.you);
+        bless1Spinner = view.findViewById(R.id.bless1);
+        bless2Spinner = view.findViewById(R.id.bless2);
         dear = view.findViewById(R.id.dear);
         name = view.findViewById(R.id.name);
 
@@ -68,11 +72,26 @@ public class Settings extends DialogFragment
 
         // real time update decided option to blessing text
         realTimeUpdate(dear);
-        realTimeUpdate(stageSpinner);
-        realTimeUpdate(eventSpinner);
-        realTimeUpdate(youSpinner);
         realTimeUpdate(name);
+        realTimeUpdate(youSpinner);
+        realTimeUpdate(eventSpinner);
+        realTimeUpdate(stageSpinner);
 
+        //  setup for real-time changing blessings
+        String selectedStage = this.stageSpinner == null ? "成年" : stageSpinner.getSelectedItem().toString();
+        ArrayAdapter<String> bless1Adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, mainActivity.assignBlesses(selectedStage));
+        ArrayAdapter<String> bless2Adapter = new ArrayAdapter<>(requireContext(), R.layout.spinner, mainActivity.assignBlesses(selectedStage));
+
+        bless1Adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+        bless2Adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+
+        bless1Spinner.setAdapter(bless1Adapter);
+        bless2Spinner.setAdapter(bless2Adapter);
+
+        realTimeUpdate(bless1Spinner);
+        realTimeUpdate(bless2Spinner);
+
+        // changing colour for matching the state
         dear.setTextColor(ContextCompat.getColor(requireContext(), !textMode ? R.color.white : R.color.white_a25));
     }
 
@@ -118,8 +137,13 @@ public class Settings extends DialogFragment
         // vanish the spinner to avoid overlaying
         spinner.setOnTouchListener((v, event) ->
         {
+            Log.d("on touch", "on touch: touched");
+
             if (event.getAction() == MotionEvent.ACTION_DOWN)
             {
+                Log.d("on touch", "on touch:  action down");
+                Log.d("on touch 2", "on touch  is shown:  " + spinner.isShown());
+
                 spinner.performClick();
                 if (spinner.isShown())
                     spinner.setAlpha(0f);
@@ -128,7 +152,6 @@ public class Settings extends DialogFragment
         });
 
         // avoid spinner vanishing, when not clicking blank area to quit
-
 
         // avoid spinner vanishing, when selecting the same option
         spinner.getViewTreeObserver().addOnGlobalLayoutListener(() -> spinner.setAlpha(1f));
@@ -141,13 +164,17 @@ public class Settings extends DialogFragment
             {
                 if (isAdded() && getActivity() != null)
                 {
+                    Log.d("on Item Selected", "on Item Selected: " + spinner.getSelectedItem().toString());
+
                     spinner.setAlpha(1f);
                     blessTextUpdate();
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.d("onNothingSelected", "onNothingSelected:  nothing selected");
+            }
         });
     }
 
